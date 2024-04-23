@@ -20,7 +20,7 @@ import pasteboard from '@ohos.pasteboard'
 @Component
 export struct InfoRow {
   icon?: string | PixelMap | Resource
-  title: string
+  title: string | Resource
   info?: string | Resource
   clickHandler?: (event?: ClickEvent) => void
   showRightArrow?: boolean = true
