@@ -34,7 +34,7 @@ struct AboutApp {
 
   @Builder NavigationTitle() {
     Column() {
-      Text('关于F-OH')
+      Text($r('app.string.about_foh'))
         .fontColor('#182431')
         .fontSize(26)
         .fontWeight(500)

@@ -49,6 +49,11 @@ class AppInfo {
   getHapUrl() {
     return this.hapUrl ? ds_server + this.hapUrl : this.hapUrl;
   }
+
+  public ResourceToString(resource:Resource):string{
+    return getContext(this).resourceManager.getStringSync(resource)
+  }
+
 }
 
 enum AppType {
@@ -68,4 +73,19 @@ enum AppActionText {
   UPDATE = "更新"
 }
 
-export {AppInfo, AppType, AppStatus, AppActionText}
+/**
+ * For localization
+ * Author:Kexin
+ */
+
+const classes = {
+  [AppActionText.OPEN]: getContext(this).resourceManager.getStringSync($r('app.string.open')),
+  [AppActionText.INSTALL]: getContext(this).resourceManager.getStringSync($r('app.string.install')),
+  [AppActionText.INSTALL]: getContext(this).resourceManager.getStringSync($r('app.string.update'))
+}
+
+export default function getEnumElement(variant:AppActionText):string {
+  return classes[variant]
+}
+
+export {AppInfo, AppType, AppStatus, AppActionText, classes}

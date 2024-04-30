@@ -41,7 +41,7 @@ export default struct Home {
     DataSource.getHomePageData((data) =>{
       this.homePageData = data;
     }, (err) => {
-      promptAction.showToast({ message: '网路异常', duration: ToastDuration });
+      promptAction.showToast({ message: $r('app.string.network_error'), duration: ToastDuration });
     });
 
     DataSource.getAppList(AppType.APP, (data, totalCount)=>{
@@ -79,8 +79,8 @@ export default struct Home {
         Scroll() {
           Column() {
             // 搜索
-            Search({ value: this.changeValue, placeholder: "搜索应用，游戏...", controller: this.controller })
-              .searchButton('搜索')
+            Search({ value: this.changeValue, placeholder: (Object)($r('app.string.app_game_search')), controller: this.controller })
+              .searchButton(getContext(this).resourceManager.getStringSync($r('app.string.search')))
               .width('100%')
               .height(40)
               .backgroundColor('#F5F5F5')

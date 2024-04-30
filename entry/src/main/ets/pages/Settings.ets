@@ -59,13 +59,13 @@ export default struct Settings {
             Column() {
               List() {
                 ListItem() { SettingRow({icon: $r('app.media.ic_download'), title: $r('app.string.download_management'), info: $r('app.string.to_be_implemented'), clickHandler: ()=> {
-                  promptAction.showToast({ message: '待实现，下载管理', duration: ToastDuration });
+                  promptAction.showToast({ message: $r('app.string.download_management_pending'), duration: ToastDuration });
                 }}) }
                 ListItem() { SettingRow({icon: $r('app.media.ic_control'), title: $r('app.string.app_management'), info: $r('app.string.to_be_implemented'), clickHandler: ()=> {
-                  promptAction.showToast({ message: '待实现，应用管理', duration: ToastDuration });
+                  promptAction.showToast({ message: $r('app.string.app_management_pending'), duration: ToastDuration });
                 }}) }
                 ListItem() { SettingRow({icon: $r('app.media.ic_internet'), title: $r('app.string.app_metadata_management'), info: $r('app.string.to_be_implemented'), clickHandler: ()=> {
-                  promptAction.showToast({ message: '待实现，应用元数据源管理', duration: ToastDuration });
+                  promptAction.showToast({ message: $r('app.string.metadata_management_pending'), duration: ToastDuration });
                 }}) }
               }.divider({ strokeWidth: 0.5, color: '#d6d6d6', startMargin: 54, endMargin: 14 })
             }.borderRadius(18).backgroundColor('#fff').margin({bottom: 10})
@@ -73,7 +73,7 @@ export default struct Settings {
             // 第2组
             Column() {
               List() {
-                ListItem() { SettingRow({icon: $r('app.media.ic_delete'), title: $r('app.string.clear_cache'), info: '清理全部已下载到本地的应用安装包', showRightArrow: false, clickHandler: ()=> {
+                ListItem() { SettingRow({icon: $r('app.media.ic_delete'), title: $r('app.string.clear_cache'), info: $r('app.string.clear_local_pkgs'), showRightArrow: false, clickHandler: ()=> {
                   this.clearCache()
                 }}) }
               }.divider({ strokeWidth: 0.5, color: '#d6d6d6', startMargin: 54, endMargin: 14 })
@@ -82,7 +82,7 @@ export default struct Settings {
             // 第3组
             Column() {
               List() {
-                ListItem() { SettingRow({icon: $r('app.media.ic_foh'), title: $r('app.string.about_foh'), info: 'OpenHarmony自由开源软件的应用中心', clickHandler: ()=> {
+                ListItem() { SettingRow({icon: $r('app.media.ic_foh'), title: $r('app.string.about_foh'), info: $r('app.string.app_center'), clickHandler: ()=> {
                   router.pushUrl({ url: 'pages/AboutApp', params: {} });
                 }}) }
                 ListItem() { SettingRow({icon: $r('app.media.author_avatar'), title: $r('app.string.about_author'), info: 'westinyang', clickHandler: ()=> {
@@ -109,8 +109,8 @@ export default struct Settings {
         title: $r('app.string.confirm_clear_cache'),
         message: $r('app.string.clear_cache_warning'),
         buttons: [
-          { text: '取消', color: '#000000', },
-          { text: '确认', color: '#3478f6', }
+          { text: $r('app.string.cancel'), color: '#000000', },
+          { text:$r('app.string.confirm'), color: '#3478f6', }
         ],
       }).then(data => {
         console.info('showDialog success, click button: ' + data.index);
@@ -120,7 +120,8 @@ export default struct Settings {
           fs.rmdir(dirPath, (err) => {
             if (err) {
               console.info("rmdir failed with error message: " + err.message + ", error code: " + err.code);
-              promptAction.showToast({ message: '清理缓存失败：' + err.code, duration: ToastDuration });
+              promptAction.showToast({ message: getContext(this).resourceManager.getStringSync($r('app.string.clear_cache_failed'))
+                + err.code, duration: ToastDuration });
             } else {
               console.info("rmdir succeed");
               promptAction.showToast({ message: $r('app.string.clear_cache_done'), duration: ToastDuration });

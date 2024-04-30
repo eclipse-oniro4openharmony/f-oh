@@ -159,6 +159,63 @@
     {
       "name": "clear_cache_done",
       "value": "Cache Cleared"
+    },
+    {
+      "name": "info_invalid",
+      "value": "Application information is invalid"
+    },
+    {
+      "name": "download_link_invalid",
+      "value": "Application download link is invalid"
+    },
+    {
+      "name": "download_failed",
+      "value": "Download failed"
+    },
+    {
+      "name": "open_failed_app_not_found",
+      "value": "Opening failed: application does not exist"
+    },
+    {
+      "name": "fails",
+      "value": "fails："
+    },
+    {
+      "name": "succeeds",
+      "value": "succeeds"
+    },
+    {
+      "name": "Copied",
+      "value": "Copied"
+    },
+    {
+      "name": "open",
+      "value": "Open"
+    },
+    {
+      "name": "install",
+      "value": "Install"
+    },
+    {
+      "name": "update",
+      "value": "Update"
+    },
+    {
+      "name": "network_error",
+      "value": "Network Error"
+    },
+    {
+      "name": "download_management_pending",
+      "value": "Download management not yet implemented"
+    },
+    {
+      "name": "app_management_pending",
+      "value": "Application management not yet implemented"
+    },
+    {
+      "name": "metadata_management_pending",
+      "value": "Application metadata source management not yet implemented"
     }
+
   ]
 }

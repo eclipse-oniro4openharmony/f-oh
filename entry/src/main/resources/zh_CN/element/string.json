@@ -159,6 +159,64 @@
     {
       "name": "clear_cache_done",
       "value": "清空缓存完毕"
+    },
+    {
+      "name": "info_invalid",
+      "value": "应用信息无效"
+    },
+    {
+      "name": "download_link_invalid",
+      "value": "应用下载链接无效"
+    },
+    {
+      "name": "download_failed",
+      "value": "下载失败"
+    },
+    {
+      "name": "open_failed_app_not_found",
+      "value": "打开失败：应用不存在"
+    },
+    {
+      "name": "fails",
+      "value": "失败："
+    },
+    {
+      "name": "succeeds",
+      "value": "成功"
+    },
+    {
+      "name": "Copied",
+      "value": "已复制"
+    },
+    {
+      "name": "open",
+      "value": "打开"
+    },
+    {
+      "name": "install",
+      "value": "安装"
+    },
+    {
+      "name": "update",
+      "value": "更新"
+    },
+    {
+      "name": "network_error",
+      "value": "网络异常"
+    },
+    {
+      "name": "download_management_pending",
+      "value": "待实现，下载管理"
+    },
+    {
+      "name": "app_management_pending",
+      "value": "待实现，应用管理"
+    },
+    {
+      "name": "metadata_management_pending",
+      "value": "待实现，应用元数据源管理"
     }
+
+
   ]
 }
