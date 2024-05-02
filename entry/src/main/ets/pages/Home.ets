@@ -53,7 +53,7 @@ export default struct Home {
 
   @Builder NavigationTitle() {
     Column() {
-      Text('F-OH')
+      Text('Oniro')
         .fontColor('#182431')
         .fontSize(26)
         .fontWeight(500)
