@@ -10,7 +10,7 @@
     },
     {
       "name": "EntryAbility_label",
-      "value": "F-OH"
+      "value": "Oniro"
     },
     {
       "name": "version",
@@ -130,7 +130,7 @@
     },
     {
       "name": "about_foh",
-      "value": "关于F-OH"
+      "value": "关于Oniro"
     },
     {
       "name": "to_be_implemented",
@@ -215,6 +215,14 @@
     {
       "name": "metadata_management_pending",
       "value": "待实现，应用元数据源管理"
+    },
+    {
+      "name": "our_fav",
+      "value": "最受喜爱"
+    },
+    {
+      "name": "top_picks",
+      "value": "为您的设备精选"
     }
 
 

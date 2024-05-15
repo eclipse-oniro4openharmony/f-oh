@@ -10,7 +10,7 @@
     },
     {
       "name": "EntryAbility_label",
-      "value": "F-OH"
+      "value": "Oniro"
     },
     {
       "name": "version",
@@ -90,7 +90,7 @@
     },
     {
       "name": "inclusion_stats",
-      "value": "Inclusion Statistics"
+      "value": "Apps Statistics"
     },
     {
       "name": "total",
@@ -215,6 +215,14 @@
     {
       "name": "metadata_management_pending",
       "value": "Application metadata source management not yet implemented"
+    },
+    {
+      "name": "our_fav",
+      "value": "Our Favourites"
+    },
+    {
+      "name": "top_picks",
+      "value": "Top Picks for Your Device"
     }
 
 
