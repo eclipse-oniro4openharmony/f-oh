@@ -63,9 +63,9 @@
         "name": "EntryAbility",
         "srcEntry": "./ets/entryability/EntryAbility.ts",
         "description": "$string:EntryAbility_desc",
-        "icon": "$media:icon",
+        "icon": "$media:ONIRO",
         "label": "$string:EntryAbility_label",
-        "startWindowIcon": "$media:icon",
+        "startWindowIcon": "$media:ONIRO",
         "startWindowBackground": "$color:start_window_background",
         "visible": true,
         "skills": [
