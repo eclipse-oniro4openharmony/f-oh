@@ -1,9 +1,16 @@
 //item in MockData on the home page
 import { AppInfo }from '../data/MockData_HomePage'
+import aboutToAppear from'../pages/Home'
+import { registerAllFonts } from '../font/registerFonts';
+import fonts from '../font/fonts';
+
 @Component
 export default struct itemComponent{
   private appItem?:AppInfo
-
+  //For Oniro Fonts
+aboutToAppear(){
+  registerAllFonts();
+}
   //自定义传参方法
   @Builder
   createIcon(icon:Resource){
@@ -30,12 +37,14 @@ export default struct itemComponent{
           .textOverflow({
             overflow: TextOverflow.Ellipsis
           })
+          .fontFamily(fonts.medium.familyName)
 
         //Desc
         Text(this.appItem.desc)
           .textOverflow({
             overflow: TextOverflow.Ellipsis
           })
+          .fontFamily(fonts.regular.familyName)
 
       }
       .alignItems(HorizontalAlign.Start)
