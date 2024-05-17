@@ -82,7 +82,7 @@ export default struct Settings {
             // 第3组
             Column() {
               List() {
-                ListItem() { SettingRow({icon: $r('app.media.ic_foh'), title: $r('app.string.about_foh'), info: $r('app.string.app_center'), clickHandler: ()=> {
+                ListItem() { SettingRow({icon: $r('app.media.ONIRO'), title: $r('app.string.about_foh'), info: $r('app.string.app_center'), clickHandler: ()=> {
                   router.pushUrl({ url: 'pages/AboutApp', params: {} });
                 }}) }
                 ListItem() { SettingRow({icon: $r('app.media.author_avatar'), title: $r('app.string.about_author'), info: 'westinyang', clickHandler: ()=> {

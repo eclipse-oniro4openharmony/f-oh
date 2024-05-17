@@ -73,7 +73,7 @@ struct AboutApp {
 
   @Builder LogoAndVersionComponent() {
     Column() {
-      Image($r("app.media.icon"))
+      Image($r("app.media.ONIRO"))
         .height(72)
         .width(72)
         .border({width: 0.7, radius: 16, color: '#ebebeb'})
@@ -99,7 +99,7 @@ struct AboutApp {
     // 第一组
     Column() {
       List() {
-        ListItem() { SettingRow({icon: $r('app.media.ic_foh'), title: $r('app.string.app_intro'), info: $r('app.string.app_center'), showRightArrow: false, clickHandler: ()=> {}}) }
+        ListItem() { SettingRow({icon: $r('app.media.ONIRO'), title: $r('app.string.app_intro'), info: $r('app.string.app_center'), showRightArrow: false, clickHandler: ()=> {}}) }
         ListItem() { SettingRow({icon: $r('app.media.author_avatar'), title: $r('app.string.app_author'), info: 'westinyang', clickHandler: ()=> {
           router.pushUrl({ url: 'pages/AboutAuthor', params: {} });
         }}) }

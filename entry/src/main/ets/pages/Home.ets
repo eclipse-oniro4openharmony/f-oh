@@ -19,6 +19,8 @@ import { AppType } from '../model/AppInfo';
 import { DataSource } from '../data/DataSource';
 import { HomePageData } from '../model/HomePageData';
 import promptAction from '@ohos.promptAction';
+import {AppInfo,mockAppInfo} from '../data/MockData_HomePage'
+import itemComponent from '../components/itemComponent'
 
 const ToastDuration = 2000
 
@@ -37,6 +39,13 @@ export default struct Home {
 
   @State homePageData: HomePageData = new HomePageData({});
 
+  //for mockApps
+  @State private totalData: Array<AppInfo>=[]
+  //during the Initialization -get data via getData()
+
+
+
+
   aboutToAppear() {
     DataSource.getHomePageData((data) =>{
       this.homePageData = data;
@@ -49,6 +58,9 @@ export default struct Home {
       this.appCount = (data as []).length;
       this.gameCount = totalCount - this.appCount;
     })
+//For MockApps
+    this.totalData=mockAppInfo
+    console.log(`${this.totalData.length}`)
   }
 
   @Builder NavigationTitle() {
@@ -94,11 +106,11 @@ export default struct Home {
               })
               .focusable(false)
 
-            // 滚动图
+            // 滚动图 main_banner
             Swiper(this.swiperController) {
-              Image($r('app.media.main_banner_1')).width('100%').height(150).borderRadius(15)
-              Image($r('app.media.main_banner_2')).width('100%').height(150).borderRadius(15)
-              Image($r('app.media.main_banner_3')).width('100%').height(150).borderRadius(15)
+              Image($r("app.media.ONIRO_Masterbrand_horizontal")).width('100%').height(150).borderRadius(15)
+              Image($r("app.media.ONIRO_Masterbrand_horizontal_black")).width('100%').height(150).borderRadius(15)
+              Image($r("app.media.ONIRO_Masterbrand_horizontal_Reversed_color")).width('100%').height(150).borderRadius(15)
             }
             .cachedCount(3)
             .index(0)
@@ -164,18 +176,60 @@ export default struct Home {
             }.margin({top: 15})
 
             // 最新公告
-            Column() {
-              Text($r('app.string.latest_announcement')).fontSize(20).width('100%').margin({bottom: 10})
+            // Column() {
+            //   Text($r('app.string.latest_announcement')).fontSize(20).width('100%').margin({bottom: 10})
+            //
+            //   Text(this.homePageData.announcement || HomePageData.defaultAnnouncement)
+            //     .width('100%')
+            //     .borderRadius(15)
+            //     .backgroundColor('#f6f6f6')
+            //     .padding(10)
+            //     .fontSize(16)
+            //     .fontColor('#555555')
+            //
+            // }.margin({top: 15}).visibility(this.homePageData.showAnnouncement ? Visibility.Visible : Visibility.None)
 
-              Text(this.homePageData.announcement || HomePageData.defaultAnnouncement)
-                .width('100%')
-                .borderRadius(15)
-                .backgroundColor('#f6f6f6')
-                .padding(10)
-                .fontSize(16)
-                .fontColor('#555555')
 
-            }.margin({top: 15}).visibility(this.homePageData.showAnnouncement ? Visibility.Visible : Visibility.None)
+            //MockApps
+            Column({space:5}){
+              Text('OUR FAVOURITES')
+                .fontSize(18)
+                .lineHeight(22)//lineHeight being slightly greater than the fontSize
+                .fontWeight(FontWeight.Bold)
+                .width('80%')
+                .margin({top:24})
+                .textAlign(TextAlign.Start)
+                .fontColor(Color.Grey)
+
+              Text("Top Picks for Your Device")
+                .fontSize(26)
+                .lineHeight(30)//lineHeight being slightly greater than the fontSize
+                .fontWeight(FontWeight.Bold)
+                .width('80%')
+                .margin({top:10,bottom:2})
+                  //align on the left
+                .textAlign(TextAlign.Start)
+              //test
+
+
+              //Sort the itemComponent in a list, to trigger the list scrolling
+              List({space:8}) {
+                //Loop Rendering
+                ForEach(this.totalData, (item: AppInfo) => {
+                  ListItem() {
+                    itemComponent({ appItem: item })
+                  }
+                })
+              }
+              .height('100%')
+              .width('100%')
+              //setting on the list
+              .padding(20)
+              .scrollBar(BarState.Off)
+            }
+            //the properties of column
+            .height('100%')
+            .width('100%')
 
           }
           .width('100%')
