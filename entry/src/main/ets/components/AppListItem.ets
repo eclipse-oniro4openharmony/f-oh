@@ -24,6 +24,7 @@ import fs from '@ohos.file.fs';
 import bundleManager from '@ohos.bundle.bundleManager';
 import hilog from '@ohos.hilog';
 import router from '@ohos.router';
+import { registerAllFonts } from '../font/registerFonts';
 
 const ToastDuration = 1000
 
@@ -63,6 +64,8 @@ export default struct AppListItem {
     } catch (err) {
       hilog.error(0x0000, 'testTag', 'getBundleInfo failed: %{public}s', err.message);
     }
+//For Oniro Fonts
+    registerAllFonts()
   }
 
   build() {
