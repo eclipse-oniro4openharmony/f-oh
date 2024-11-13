@@ -49,8 +49,20 @@
       "value": "应用"
     },
     {
+      "name": "app_version",
+      "value": "版本"
+    },
+    {
+      "name": "oniro_platform",
+      "value": "Oniro平台"
+    },
+    {
       "name": "game",
       "value": "游戏"
+    },
+    {
+      "name": "oniro_appStore",
+      "value": "Oniro应用商城"
     },
     {
       "name": "app_details",

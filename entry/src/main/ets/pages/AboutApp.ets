@@ -14,11 +14,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
-import WindowStageUtil from '../util/WindowStageUtil';
+import WindowStageUtil from '../utils/WindowStageUtil';
 import { SettingRow } from '../components/Settings';
 import promptAction from '@ohos.promptAction';
 import router from '@ohos.router';
+import window from '@ohos.window';
 
 const ToastDuration = 1000
 const APP_VERSION = "1.3.5";
@@ -26,20 +26,24 @@ const APP_VERSION = "1.3.5";
 @Entry
 @Component
 struct AboutApp {
-
   onPageShow() {
-    console.info('AboutComponent onPageShow');
-    WindowStageUtil.setLayoutFullScreen(globalThis.windowStage, '#f3f4f6', WindowStageUtil.COLOR_BLACK, '#f3f4f6', WindowStageUtil.COLOR_BLACK);
+    const windowStage = AppStorage.get<window.WindowStage>("windowStage");
+    console.info('About app onPageShow');
+    WindowStageUtil.setLayoutFullScreen(windowStage, '#f3f4f6', WindowStageUtil.COLOR_BLACK, '#f3f4f6', WindowStageUtil.COLOR_BLACK);
   }
 
-  @Builder NavigationTitle() {
+  @Builder
+  NavigationTitle() {
     Column() {
       Text($r('app.string.about_foh'))
         .fontColor('#182431')
         .fontSize(26)
         .fontWeight(500)
-    }.alignItems(HorizontalAlign.Start)
+    }
+    .justifyContent(FlexAlign.Center)
+    .alignItems(HorizontalAlign.Start)
     .width('100%')
+    .height('100%')
   }
 
   build() {
@@ -58,34 +62,42 @@ struct AboutApp {
           Column() {
             this.LogoAndVersionComponent()
             this.AppInfoComponent()
-          }.width('100%').padding({left: 15, right: 15})
+          }.width('100%').padding({ left: 15, right: 15 })
         }
         .edgeEffect(EdgeEffect.None)
         .width('100%')
         .height('auto')
-        .margin({bottom: 56})
+        .margin({ bottom: 56 })
       }
       .width('100%')
       .height('100%')
     }.width('100%').height('100%').backgroundColor('#f3f4f6')
-//    .padding({top: WindowStageUtil.STATUS_BAR_HEIGHT})
+
+    //    .padding({top: WindowStageUtil.STATUS_BAR_HEIGHT})
   }
 
-  @Builder LogoAndVersionComponent() {
+  @Builder
+  LogoAndVersionComponent() {
     Column() {
       Image($r("app.media.ONIRO"))
-        .height(72)
-        .width(72)
-        .border({width: 0.7, radius: 16, color: '#ebebeb'})
+        .height(100)
+        .width(100)
+        .border({ width: 0.7, radius: 16, color: '#ebebeb' })
       Text($r('app.string.EntryAbility_label'))
         .fontSize(18)
         .fontColor('#182431')
         .fontWeight(500)
         .padding({ top: 8 })
-      Text('版本 ' + APP_VERSION)
-        .fontSize(14)
-        .fontColor('#99182431')
-        .margin({top: 4})
+      Row() {
+        Text($r('app.string.app_version'))
+          .fontSize(14)
+          .fontColor('#99182431')
+          .margin({ top: 4 })
+        Text(' ' + APP_VERSION)
+          .fontSize(14)
+          .fontColor('#99182431')
+          .margin({ top: 4 })
+      }
     }
     .alignItems(HorizontalAlign.Center)
     .align(Alignment.Top)
@@ -95,20 +107,66 @@ struct AboutApp {
     })
   }
 
-  @Builder AppInfoComponent() {
+  @Builder
+  AppInfoComponent() {
     // 第一组
     Column() {
       List() {
-        ListItem() { SettingRow({icon: $r('app.media.ONIRO'), title: $r('app.string.app_intro'), info: $r('app.string.app_center'), showRightArrow: false, clickHandler: ()=> {}}) }
-        ListItem() { SettingRow({icon: $r('app.media.author_avatar'), title: $r('app.string.app_author'), info: 'westinyang', clickHandler: ()=> {
-          router.pushUrl({ url: 'pages/AboutAuthor', params: {} });
-        }}) }
-        ListItem() { SettingRow({icon: $r('app.media.ic_favorite'), title: $r('app.string.repo'), info: 'https://gitee.com/westinyang/f-oh', clickHandler: ()=> {
-          router.pushUrl({ url: 'pages/Browser', params: {title: $r('app.string.community'), url: 'https://gitee.com/westinyang/f-oh'} });
-        }}) }
-        ListItem() { SettingRow({icon: $r('app.media.ic_gitee'), title: $r('app.string.community'), info: 'https://gitee.com/ohos-dev', clickHandler: ()=> {
-          router.pushUrl({ url: 'pages/Browser', params: {title:$r('app.string.community'), url: 'https://gitee.com/ohos-dev'} });
-        }}) }
+        ListItem() {
+          SettingRow({
+            icon: $r('app.media.ONIRO'),
+            title: $r('app.string.oniro_platform'),
+            info: 'https://oniroproject.org/',
+            clickHandler: () => {
+              router.pushUrl({
+                url: 'pages/Browser',
+                params: { title: $r('app.string.oniro_platform'), url: 'https://oniroproject.org/' }
+              });
+            }
+          })
+        }
+
+        ListItem() {
+          SettingRow({
+            icon: $r('app.media.author_avatar'),
+            title: $r('app.string.app_author'),
+            info: 'westinyang',
+            clickHandler: () => {
+              router.pushUrl({ url: 'pages/AboutAuthor', params: {} });
+            }
+          })
+        }
+
+        ListItem() {
+          SettingRow({
+            icon: $r('app.media.ic_favorite'),
+            title: $r('app.string.repo'),
+            info: 'https://github.com/eclipse-oniro4openharmony/f-oh',
+            clickHandler: () => {
+              router.pushUrl({
+                url: 'pages/Browser',
+                params: { title: $r('app.string.repo'), url: 'https://github.com/eclipse-oniro4openharmony/f-oh' }
+              });
+            }
+          })
+        }
+
+        ListItem() {
+          SettingRow({
+            icon: $r('app.media.ic_eclipse_oniro'),
+            title: $r('app.string.community'),
+            info: 'https://github.com/orgs/eclipse-oniro4openharmony/repositories',
+            clickHandler: () => {
+              router.pushUrl({
+                url: 'pages/Browser',
+                params: {
+                  title: $r('app.string.community'),
+                  url: 'https://github.com/orgs/eclipse-oniro4openharmony/repositories'
+                }
+              });
+            }
+          })
+        }
       }.divider({ strokeWidth: 0.5, color: '#d6d6d6', startMargin: 58, endMargin: 14 })
     }.borderRadius(18).backgroundColor('#fff')
   }

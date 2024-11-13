@@ -14,12 +14,24 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 import webview from '@ohos.web.webview';
 import hilog from '@ohos.hilog';
-import parameter from '@ohos.systemparameter'
+import systemparameter from '@ohos.systemParameterEnhance';
 import router from '@ohos.router'
-import WindowStageUtil from '../util/WindowStageUtil';
+import WindowStageUtil from '../utils/WindowStageUtil';
+import window from '@ohos.window';
+import { BusinessError } from '@ohos.base';
+import { RouterParams } from './AppDetail'
+
+interface RouterParameters {
+  title: string,
+  url: string,
+  params: RouterParams
+}
+
+interface ExtObj {
+  test: (str: string) => string;
+}
 
 // 自定义UA
 const PAD_USER_AGENT: string = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTMl, like Gecko) Chrome/99.0.4844.88 Safari/537.36'
@@ -28,43 +40,132 @@ const PHONE_USER_AGENT: string = 'Mozilla/5.0 (Linux; Android 10.0; ohos) AppleW
 @Entry
 @Component
 struct Browser {
-  @State title: string = router.getParams()['title']
-  @State url: string = router.getParams()['url']
-
-  @State isPhone: boolean = false
+  @State isLoading: boolean = false
+  @State isHttpError: boolean = false
+  @State title: string = ''
+  @State localParams: RouterParams | null = null;
+  @State url: string = ''
+  @State isPhone: boolean = true
   controller: webview.WebviewController = new webview.WebviewController()
-
-  onPageShow() {
-    console.info('AboutComponent onPageShow');
-    WindowStageUtil.setLayoutFullScreen(globalThis.windowStage, WindowStageUtil.COLOR_WHITE, WindowStageUtil.COLOR_BLACK, WindowStageUtil.COLOR_WHITE, WindowStageUtil.COLOR_BLACK);
+  // 扩展浏览器对象
+  extObj: ExtObj = {
+    test: (str) => {
+      console.log("extObj.test: " + str)
+      return "test " + str
+    }
   }
 
-  @Builder NavigationTitle() {
+  onPageShow() {
+    const windowStage = AppStorage.get<window.WindowStage>("windowStage");
+    let params = router.getParams() as RouterParameters
+    this.title = params.title
+    this.url = params.url
+    this.localParams = params.params
+    console.info('AboutComponent onPageShow');
+    WindowStageUtil.setLayoutFullScreen(windowStage, WindowStageUtil.COLOR_WHITE, WindowStageUtil.COLOR_BLACK, WindowStageUtil.COLOR_WHITE, WindowStageUtil.COLOR_BLACK);
+  }
+
+  onBackPress(): boolean | void {
+    if(this.localParams){
+      //todo: Temporarily make backbtton back to index to avoid crash
+      router.back({
+        url: 'pages/Index'
+      })
+    }else{
+      router.back()
+    }
+  }
+
+  @Builder
+  NavigationTitle() {
     Column() {
       Text(this.title)
         .fontColor('#182431')
         .fontSize(26)
         .fontWeight(500)
-    }.alignItems(HorizontalAlign.Start)
+    }
+    .justifyContent(FlexAlign.Center)
+    .alignItems(HorizontalAlign.Start)
+    .height('100%')
     .width('100%')
   }
 
   build() {
     Column() {
-      // 页面标题
-      Navigation()
-        .title(this.NavigationTitle())
-        .hideToolBar(true)
-        .height(56)
-        .width('100%')
-        .titleMode(NavigationTitleMode.Mini)
-        .hideBackButton(false)
+      Stack() {
+        Row() {
+
+          Button() {
+            Image($r('app.media.ic_back'))
+              .height(20)
+              .width(20)
+          }
+          .backgroundColor(Color.White)
+          .height('5%')
+          .type(ButtonType.Circle)
+          .fontWeight(FontWeight.Medium)
+          .opacity(0.8)
+          .margin({
+            left: 15
+          })
+          .onClick(() => {
+            router.back({
+              url: 'pages/Index'
+            });
+          })
+
+          // 页面标题
+          Navigation()
+            .title(this.NavigationTitle())
+            .hideToolBar(true)
+            .height(56)
+            .width('100%')
+            .titleMode(NavigationTitleMode.Mini)
+            .hideBackButton(true)
+        }
+
+        Button() {
+          Image($r('app.media.ic_refresh'))
+            .height(30)
+            .width(30)
+        }
+        .zIndex(1)
+        .fontColor(Color.Black)
+        .backgroundColor(Color.White)
+        .height('5%')
+        .type(ButtonType.Circle)
+        .fontWeight(FontWeight.Medium)
+        .opacity(0.8)
+        .margin({
+          right: 15
+        })
+        .onClick(() => {
+          try {
+            this.isLoading = true
+            this.controller.refresh();
+            this.controller.loadUrl(this.url)
+          } catch (error) {
+            hilog.error(0x0, `ErrorCode: ${(error as BusinessError).code}`, `Message: ${(error as BusinessError).message}`);
+          }
+        })
+      }
+      .alignContent(Alignment.End)
+
+      if (this.isLoading) {
+        LoadComponent()
+      }
+
+      if (this.isHttpError) {
+        HttpErrorComponent({
+          text: 'Seems you don\'t have Internet'
+        })
+      }
 
       // 加载在线网页
       Web({ src: this.url, controller: this.controller })
         .width('100%')
         .height('100%')
-        .padding({bottom: 56})
+        .padding({ bottom: 56 })
         .javaScriptAccess(true)
         .javaScriptProxy({
           object: this.extObj,
@@ -74,8 +175,16 @@ struct Browser {
         })
         .fileAccess(true)
         .domStorageAccess(true)
-        .userAgent(this.isPhone ? PHONE_USER_AGENT : PAD_USER_AGENT)
+        .zoomAccess(true)
+        .onControllerAttached(() => {
+          this.controller.loadUrl(this.url)
+          this.controller.setCustomUserAgent(this.isPhone ? PHONE_USER_AGENT : PAD_USER_AGENT)
+        })
         .onPageBegin((event) => {
+          this.isLoading = false
+
+          // 在重新加载的时候
+          this.isHttpError = false
           hilog.info(0x0, '[Index]', `onPageBegin= ${JSON.stringify(event)}`)
         })
         .onPageEnd((event) => {
@@ -84,12 +193,22 @@ struct Browser {
         .onProgressChange((event) => {
           hilog.info(0x0, '[Index]', `onProgressChange`)
         })
+        .onErrorReceive((event) => {
+          if (event) {
+            this.isHttpError = true
+          }
+        })
+
     }
+    .width('100%')
+    .height('100%')
   }
 
+  //执行其build()函数之前执行
   aboutToAppear() {
+    this.isLoading = true
     try {
-      let deviceType = parameter.getSync("const.build.characteristics")
+      let deviceType = systemparameter.getSync("const.build.characteristics")
       // 修改为：default 也认为是 phone
       if (deviceType === 'phone' || deviceType === 'default') {
         this.isPhone = true
@@ -98,12 +217,42 @@ struct Browser {
       hilog.info(0x0, '[Index]', `getSync unexpected error: ${e}`)
     }
   }
+}
 
-  // 扩展浏览器对象
-  extObj = {
-    test: (str) => {
-      console.log("extObj.test: " + str)
-      return "test " + str
+@Component
+export struct LoadComponent {
+  build() {
+    Column() {
+      LoadingProgress()
+        .color(Color.Blue)
+        .width(50)
+        .margin({ bottom: '10%' })
     }
+    .height('100%')
+    .justifyContent(FlexAlign.Center)
+  }
+}
+
+@Component
+export struct HttpErrorComponent {
+  @Prop text: string = ''
+
+  build() {
+    Column() {
+      Column() {
+
+        Image($r('app.media.ic_no_wifi'))
+          .width('20%')
+          .opacity(0.4)
+        Text(this.text)
+          .opacity(0.4)
+          .margin(5)
+      }
+      .margin({
+        bottom: '10%'
+      })
+    }
+    .height('100%')
+    .justifyContent(FlexAlign.Center)
   }
 }

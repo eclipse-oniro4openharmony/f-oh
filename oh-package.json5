@@ -1,11 +1,14 @@
 {
-  "license": "ISC",
-  "devDependencies": {
-    "@ohos/hypium": "1.0.6"
-  },
-  "name": "foh",
-  "description": "example description",
-  "repository": {},
+  "name": "appstore_sample",
   "version": "1.0.0",
-  "dependencies": {}
+  "description": "Please describe the basic information.",
+  "main": "",
+  "author": "",
+  "license": "",
+  "dependencies": {
+  },
+  "devDependencies": {
+    "@ohos/hypium": "1.0.13",
+    "@ohos/hamock": "1.0.0"
+  }
 }

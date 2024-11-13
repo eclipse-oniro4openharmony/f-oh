@@ -14,16 +14,37 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 {
   "app": {
-    "signingConfigs": [],
-    "compileSdkVersion": 9,
-    "compatibleSdkVersion": 9,
+    "signingConfigs": [
+      {
+        "name": "default",
+        "material": {
+          "certpath": "C:/Users/c84381641/.ohos/config/openharmony/default_f-oh_mm02BYnLMQPXzrSgKlLhtRhsCVUFydez5PWZ5mI2yk8=.cer",
+          "storePassword": "0000001A3BB3197A35131A2D15D5387C555B11E6CC69F7CA7ECC3F1CF0D5C6644A7E59FF038F7CEFEAD1",
+          "keyAlias": "debugKey",
+          "keyPassword": "0000001A512722DDC45555CC06840303F2B7B563724181BBDAD1C00CDF80CDE2B97228774EDC915BD16F",
+          "profile": "C:/Users/c84381641/.ohos/config/openharmony/default_f-oh_mm02BYnLMQPXzrSgKlLhtRhsCVUFydez5PWZ5mI2yk8=.p7b",
+          "signAlg": "SHA256withECDSA",
+          "storeFile": "C:/Users/c84381641/.ohos/config/openharmony/default_f-oh_mm02BYnLMQPXzrSgKlLhtRhsCVUFydez5PWZ5mI2yk8=.p12"
+        }
+      }
+    ],
     "products": [
       {
         "name": "default",
         "signingConfig": "default",
+        "compileSdkVersion": 11,
+        "compatibleSdkVersion": 11,
+        "runtimeOS": "OpenHarmony",
+      }
+    ],
+    "buildModeSet": [
+      {
+        "name": "debug",
+      },
+      {
+        "name": "release"
       }
     ]
   },

@@ -1,5 +1,24 @@
+
+// 定义 Font 接口
+export interface Font {
+  familyName: string;
+  familySrc: string;
+}
+
+// 定义 Fonts 对象的接口
+// 定义具体的 Fonts 对象类型
+interface Fonts {
+  semi_bold: Font;
+  bold: Font;
+  medium: Font;
+  light: Font;
+  regular: Font;
+  extraBold: Font;
+  italic: Font;
+}
+
 //define fonts as lists of objects
-const fonts = {
+export const fonts: Fonts = {
   semi_bold: {
     familyName: 'SemiBold',
     familySrc: '/font/PlusJakartaSans-semiBold.ttf',
@@ -30,4 +49,4 @@ const fonts = {
   }
 };
 
-export default fonts;
+// export default fonts;
