@@ -14,13 +14,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
-import WindowStageUtil from '../util/WindowStageUtil';
+import WindowStageUtil from '../utils/WindowStageUtil';
 import { SettingRow } from '../components/Settings';
 import promptAction from '@ohos.promptAction';
 import router from '@ohos.router';
 import { registerAllFonts } from '../font/registerFonts';
-import fonts from '../font/fonts';
+import { fonts } from '../font/fonts'
+import window from '@ohos.window';
 
 const ToastDuration = 1000
 const AUTHOR_NAME = "westinyang"
@@ -29,12 +29,13 @@ const AUTHOR_INFO = $r('app.string.indie_dev');
 @Entry
 @Component
 struct AboutAuthor {
-aboutToAppear(){
-  registerAllFonts();
-}
+  aboutToAppear(){
+    registerAllFonts();
+  }
   onPageShow() {
-    console.info('AboutComponent onPageShow');
-    WindowStageUtil.setLayoutFullScreen(globalThis.windowStage, '#f3f4f6', WindowStageUtil.COLOR_BLACK, '#f3f4f6', WindowStageUtil.COLOR_BLACK);
+    const windowStage = AppStorage.get<window.WindowStage>("windowStage");
+    console.info('About author onPageShow');
+    WindowStageUtil.setLayoutFullScreen(windowStage, '#f3f4f6', WindowStageUtil.COLOR_BLACK, '#f3f4f6', WindowStageUtil.COLOR_BLACK);
   }
 
   @Builder NavigationTitle() {
@@ -43,8 +44,11 @@ aboutToAppear(){
         .fontColor('#182431')
         .fontSize(26)
         .fontWeight(500)
-    }.alignItems(HorizontalAlign.Start)
+    }
+    .justifyContent(FlexAlign.Center)
+    .alignItems(HorizontalAlign.Start)
     .width('100%')
+    .height('100%')
   }
 
   build() {
@@ -73,7 +77,7 @@ aboutToAppear(){
       .width('100%')
       .height('100%')
     }.width('100%').height('100%').backgroundColor('#f3f4f6')
-//    .padding({top: WindowStageUtil.STATUS_BAR_HEIGHT})
+    //    .padding({top: WindowStageUtil.STATUS_BAR_HEIGHT})
   }
 
   @Builder LogoAndVersionComponent() {
@@ -87,13 +91,15 @@ aboutToAppear(){
         .fontColor('#182431')
         .fontWeight(500)
         .padding({ top: 8 })
-        .fontFamily(fonts.semi_bold.familyName)
+      // todo: 不明白为什么会出现乱码
+        //.fontFamily(fonts.semi_bold.familyName)
 
       Text(AUTHOR_INFO)
         .fontSize(14)
         .fontColor('#99182431')
         .margin({top: 4})
-        .fontFamily(fonts.regular.familyName)
+      // todo: 不明白为什么会出现乱码
+        //.fontFamily(fonts.regular.familyName)
     }
     .alignItems(HorizontalAlign.Center)
     .align(Alignment.Top)

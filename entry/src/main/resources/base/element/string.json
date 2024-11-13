@@ -49,6 +49,18 @@
       "value": "App"
     },
     {
+      "name": "app_version",
+      "value": "Version"
+    },
+    {
+      "name": "oniro_platform",
+      "value": "Oniro Platform"
+    },
+    {
+      "name": "oniro_appStore",
+      "value": "Oniro App Store"
+    },
+    {
       "name": "game",
       "value": "Game"
     },

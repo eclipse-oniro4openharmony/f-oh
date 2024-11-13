@@ -14,28 +14,27 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
+import { ObjectUtils } from '../utils/ObjectUtils';
 import { ds_server } from '../data/DataSource';
 
 class AppInfo {
-  constructor(source: Partial<AppInfo>) {
-    Object.assign(this, source);
+  constructor(source?: Partial<AppInfo>) {
+    ObjectUtils.assign(this, source);
   }
 
   /* 元数据 */
-  id: number
-  name: string
-  desc: string
-  icon: string
-  vender: string
-  packageName: string
-  version: string
-  hapUrl: string
-  type: string
-  tags: string
-  openSourceAddress: string
-  releaseTime: string
-
+  id: number = 0
+  name: string = ''
+  desc: string = ''
+  icon: string = ''
+  vender: string = ''
+  packageName: string = ''
+  version: string = ''
+  hapUrl: string = ''
+  type: string = ''
+  tags: string = ''
+  openSourceAddress: string = ''
+  releaseTime: string = ''
   /* 扩展数据 */
   // 应用状态
   status: AppStatus = AppStatus.NOT_INSTALLED
@@ -50,10 +49,9 @@ class AppInfo {
     return this.hapUrl ? ds_server + this.hapUrl : this.hapUrl;
   }
 
-  public ResourceToString(resource:Resource):string{
+  public ResourceToString(resource: Resource): string {
     return getContext(this).resourceManager.getStringSync(resource)
   }
-
 }
 
 enum AppType {
@@ -62,30 +60,48 @@ enum AppType {
 }
 
 enum AppStatus {
-  NOT_INSTALLED = 0,  // 未安装
-  INSTALLED = 1,      // 已安装
-  UPDATABLE = 2,      // 可更新
+  NOT_INSTALLED = 0, // 未安装
+  INSTALLED = 1, // 已安装
+  UPDATABLE = 2, // 可更新
 }
 
+// todo: to be changed with resource type
 enum AppActionText {
-  OPEN = "打开",
-  INSTALL = "安装",
-  UPDATE = "更新"
+  OPEN = "Open",
+  INSTALL = "Install",
+  UPDATE = "Update"
 }
 
-/**
- * For localization
- * Author:Kexin
- */
-
-const classes = {
-  [AppActionText.OPEN]: getContext(this).resourceManager.getStringSync($r('app.string.open')),
-  [AppActionText.INSTALL]: getContext(this).resourceManager.getStringSync($r('app.string.install')),
-  [AppActionText.INSTALL]: getContext(this).resourceManager.getStringSync($r('app.string.update'))
+// 定义映射接口，将标识符与实际资源字符串对应
+interface AppActionClasses {
+  open: string;
+  install: string;
+  update: string;
 }
+
+// 定义 ActionTextMap 接口，替代对象字面量类型
+interface ActionTextMap {
+  open: AppActionText;
+  install: AppActionText;
+  update: AppActionText;
+}
+
+// 使用 ActionTextMap 接口声明 actionTextMap 对象
+const actionTextMap: ActionTextMap = {
+  open: AppActionText.OPEN,
+  install: AppActionText.INSTALL,
+  update: AppActionText.UPDATE,
+};
+
+// 定义 classes 对象，使用标识符友好的键名
+const classes: AppActionClasses = {
+  open: getContext(this).resourceManager.getStringSync($r('app.string.open')),
+  install: getContext(this).resourceManager.getStringSync($r('app.string.install')),
+  update: getContext(this).resourceManager.getStringSync($r('app.string.update'))
+};
 
 export default function getEnumElement(variant:AppActionText):string {
-  return classes[variant]
+  return Object(classes)[variant]
 }
 
 export {AppInfo, AppType, AppStatus, AppActionText, classes}

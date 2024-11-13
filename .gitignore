@@ -9,4 +9,3 @@
 /.clang-format
 /.clang-tidy
 **/.test
-/signature
