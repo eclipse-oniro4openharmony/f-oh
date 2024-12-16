@@ -1,140 +1,129 @@
 # F-OH
 
-<img src="entry/src/main/resources/base/media/icon.png" width="128px" />
+<img src="entry/src/main/resources/base/media/ONIRO.png" width="128px" />
 
-## 项目介绍
+## Project Introduction
 
-> 技术咨询请来这里：[关于作者](https://kaihongpai.feishu.cn/wiki/CqWLwJRadibxztkrIWZcogWxnXd)
+> For technical consultation, please go here：[About Author](https://kaihongpai.feishu.cn/wiki/CqWLwJRadibxztkrIWZcogWxnXd)
 
-F-OH 是一个 OpenHarmony 平台上 FOSS（Free and Open Source Software，自由开源软件）的应用中心，并提供下载安装支持
+Oniro is an application center on the OpenHarmony platform, and provides download and installation support
 
-F-OH 创建的初衷不论是命名还是愿景都受到了来自 [F-Droid](https://f-droid.org) 的启发，也许 OpenHarmony 背负了太多大家对国产化操作系统及生态的期待，那就让我们用实际行动由开源社区来共同维护和驱动 F-OH 去完成它的使命！
+The original intention of creating F-OH, both in terms of name and vision, was inspired by [F-Droid](https://f-droid.org). Perhaps OpenHarmony carries too much of everyone's expectations for domestic operating systems and ecosystems. Let us take practical actions to jointly maintain and drive F-OH through the open source community to fulfill its mission!
 
-其实我给他想过一个中文的名字叫做：“自由开鸿”，很贴合F-OH的含义，但可能是我太执着太执念与最初的想法，暂时并不想改变它
+In fact, the author thought of giving him a Chinese name called "自由开鸿", which fits the meaning of F-OH very well, but maybe the author am too persistent and obsessed with the original idea, and he don't want to change it for the time being.
 
-开源仓库
+[Open source repository](https://github.com/eclipse-oniro4openharmony/f-oh/tree/oniro)
 
-- [Gitee](https://gitee.com/westinyang/f-oh)
-- [Github](https://github.com/westinyang/f-oh)
+[Open source community](https://github.com/orgs/eclipse-oniro4openharmony/repositories)
 
-### 系列项目
+### Series Projects
 
-- [F-OH](https://gitee.com/westinyang/f-oh) `F-OH OpenHarmony 移动端`
-- [F-OH Data](https://gitee.com/westinyang/f-oh-data) `F-OH 所有应用程序的元数据`
-- [F-OH Server](F-OH-Server.md) `F-OH 服务器，提供接口服务、平台管理等（待开发）`
-- [F-OH Website](F-OH-Web.md) `F-OH 网站，包含文档、博客、精选应用等（待开发）`
+- [F-OH Data](https://github.com/eclipse-oniro4openharmony/f-oh-data) `Metadata for all applications on F-OH`
+- [F-OH Server](F-OH-Server.md) `F-OH Server，Providing interface services、Platform management, etc. (to be developed）`
+- [F-OH Website](F-OH-Web.md) `F-OH website, including documents, blogs, featured applications, etc. (to be developed)`
 
-### 衍生项目
+### Derivative Projects
 
-- [F-OH Web](https://gitee.com/ohos-dev/F-OH-Web) `使用 Bootstrap + Flask 实现的前后端一体的 F-OH Web版，并提供接口、应用上传和管理等功能，目前主要由 @myyauyau 来维护`
-- [F-OH PWA](https://gitee.com/ohos-dev/F-OH-PWA) `F-OH的第三方PWA版本，并提供基于Tauri的客户端，目前主要由 @Jesse205 来维护`
+- [F-OH Web](https://gitee.com/ohos-dev/F-OH-Web)
+`The front-end and back-end integrated F-OH Web version is implemented using Bootstrap + Flask, and provides interface, application upload and management functions. It is currently mainly maintained by @myyauyau`
+- [F-OH PWA](https://gitee.com/ohos-dev/F-OH-PWA) `A third-party PWA version of F-OH, and provides a Tauri-based client, currently maintained by @Jesse205`
 
-## 下载安装
+## ~~Submit Applications~~
 
-- https://gitee.com/westinyang/f-oh/releases
+>F-OH only includes free and open source software. "Free software must be open source, but open source software is not necessarily free. Some open source licenses are too harsh on users, so they are not listed as free software." Quoting the answer written by Richard Stallman, founder of Free GNU and FSF: [Why does open source miss the point of free software?](https://www.gnu.org/philosophy/open-source-misses-the-point.zh-cn.html)
 
-## ~~提交应用~~
+> In the early stages of development, in order to minimize the investment costs of backend development and servers, we temporarily used our own Git service to collaborate and manage the application metadata.
 
-> F-OH仅收录自由开源软件，“自由软件必定开源，开源软件未必自由，有些开源许可证对用户过于苛刻，它们就没有被列为自由软件”，引用自由GNU，FSF创始人——Richard Stallman编写的回答：[为什么开源错失了自由软件的重点？](https://www.gnu.org/philosophy/open-source-misses-the-point.zh-cn.html)
+- [F-OH Data](https://github.com/eclipse-oniro4openharmony/f-oh-data)
+- ~~This is where the metadata of all F-OH applications is stored. Developers can submit their own applications here.~~
+- ~~Open this repository link and follow the instructions to submit your application (very simple)~~
 
-> 开发初期，为了最大程度减小后端开发和服务器的投入成本，暂时用自建的Git服务来协作管理应用的元数据
+## Functionaility List
 
-- [F-OH Data](https://gitee.com/westinyang/f-oh-data)
-- ~~这里存放了 F-OH 所有应用程序的元数据，开发者在这里PR提交自己的应用~~
-- ~~打开这个仓库链接，按照里面的指引去提交自己的应用（很简单的）~~
+Client
+- [x] Home page layout
+- [x] App games (list and status synchronization)
+- [x] App operations (download, install, open)
+- [x] Settings page
+- [x] About page
+- [x] App updates
+- [x] Adapt to immersive status bar and navigation bar
+- [x] Clear cache
+- [x] App details (simple implementation, jump to open source repository)
+- [x] App details (complete implementation)
+- [ ] Enrich home page
+- [ ] App search
+- [ ] Download management
+- [ ] App management
+- [ ] App metadata source management
 
-## 功能列表
+Server
 
-客户端
+- [x] Simple application metadata source
+- [ ] Complete backend management system
 
-- [x] 首页布局
-- [x] 应用游戏（列表和状态同步）
-- [x] 应用操作（下载、安装、打开）
-- [x] 设置页面
-- [x] 关于页面
-- [x] 应用更新
-- [x] 适配沉浸状态栏、导航栏
-- [x] 清空缓存
-- [x] 应用详情（简单实现，跳转开源仓库） 
-- [x] 应用详情（完整实现）
-- [ ] 丰富首页
-- [ ] 应用搜索
-- [ ] 下载管理
-- [ ] 应用管理
-- [ ] 应用元数据源管理
+## Development Environment
 
-服务端
+- DevEco Studio 4.1 Release
+- SDK API11 4.1 Release (Full-SDK)
 
-- [x] 简易的应用元数据源
-- [ ] 完整的后端管理系统
+## Compatibility Testing
 
-## 开发环境
+- We tested it on OpenHarmony developer phone based on OpenHarmony 4.1 Release
+- There is no standard system development board, so the horizontal screen, resolution and other issues cannot be debugged and optimized for the time being.
 
-> [Full-SDK编译和替换指南](https://gitee.com/openharmony/docs/blob/OpenHarmony-3.2-Release/zh-cn/application-dev/quick-start/full-sdk-compile-guide.md)
+## Deployment Tutorial
 
-- DevEco Studio 3.1 Release
-- SDK API9 3.2.12.5 Release (Full-SDK)
+- Pull the [F-OH Data](https://github.com/eclipse-oniro4openharmony/f-oh-data) repository to your local computer, enter this directory, and start a static resource server
+- Modify the client source code `entry/src/main/ets/data/DataSource.ets` line 24 `ds_server` to point to your static resource server address
+- Recompile
 
-## 兼容测试
+## Screenshot preview
 
-- 因为目前我手上只有 一加6T OpenHarmony 3.2 Release
-- 并没有任何标准系统的开发板，所以说横屏、分辨率等问题暂时无法调试优化
+<img src="screenshot/01.PNG" width="300px" />
+<img src="screenshot/02.PNG" width="300px" />
+<img src="screenshot/03.PNG" width="300px" />
+<img src="screenshot/04.PNG" width="300px" />
+<img src="screenshot/05.PNG" width="300px" />
+<img src="screenshot/06.PNG" width="300px" />
 
-## 部署教程
+## Video Demonstration
 
-> 2023-12-29 [F-OH停服公告](ServerStopAnnouncement.md)  
+- [F-OH: OpenHarmony free and open source software application market is finally born ~ unprecedented ~](https://www.bilibili.com/video/BV1dM411N7CG)
+- [F-OH OpenHarmony App Market V1.1: Updated apps, immersive status bar, new icons](https://www.bilibili.com/video/BV1ig4y1u7dD)
+- [F-OH OpenHarmony App Market V1.2: built-in browser, clear cache, lots of updates and compatibility optimizations](https://www.bilibili.com/video/BV1LP411S79y)
+- [F-OH OpenHarmony App Market V1.3: Added app details, you can view developer information and more](https://www.bilibili.com/video/BV1Th4y1Z7sm)
 
-- 拉取 [F-OH Data](https://gitee.com/westinyang/f-oh-data) 仓库到本地，进入此目录，启动一个静态资源服务器
-- 修改客户端源码 `entry/src/main/ets/data/DataSource.ets` 第25行的 `ds_server` 指向你的静态资源服务器地址
-- 重新编译即可
+## License Statement
 
-## 截图预览
+- This project is open source under the GPLv3 license. You can download it under the terms of the Free Software Foundation[GNU General Public License](https://www.gnu.org/licenses/gpl.html)'s term to make modification and/or redistribution.
+- Bottom icon source: https://gitee.com/openharmony/applications_app_samples
+- Other icons from: https://www.flaticon.com/packs/basic-user-interface-147
 
-<img src="screenshot/01.jpg" width="300px" />
-<img src="screenshot/02.jpg" width="300px" />
-<img src="screenshot/03.jpg" width="300px" />
-<img src="screenshot/04.jpg" width="300px" />
-<img src="screenshot/05.jpg" width="300px" />
-<img src="screenshot/06.jpg" width="300px" />
+## Sponsorship
 
-## 视频演示
-
-- [F-OH：OpenHarmony 自由开源软件的应用市场终于诞生啦~ 空前绝后~](https://www.bilibili.com/video/BV1dM411N7CG)
-- [F-OH OpenHarmony应用市场 V1.1：更新应用、沉浸状态栏、新图标](https://www.bilibili.com/video/BV1ig4y1u7dD)
-- [F-OH OpenHarmony应用市场 V1.2：内嵌浏览器、清空缓存、大量更新兼容优化](https://www.bilibili.com/video/BV1LP411S79y)
-- [F-OH OpenHarmony应用市场 V1.3：新增应用详情，可查看开发者等信息](https://www.bilibili.com/video/BV1Th4y1Z7sm)
-
-## 许可声明
-
-- 本项目是以GPLv3许可开源，你可以根据自由软件基金会发布的 [GNU通用公共许可证](https://www.gnu.org/licenses/gpl.html) 的条款重新分配和/或对其进行修改
-- 应用图标出处：https://www.flaticon.com/free-icon/ellipse_4674229
-- 底部图标出处：https://gitee.com/openharmony/applications_app_samples
-- 其他图标出处：https://www.flaticon.com/packs/basic-user-interface-147
-
-## 赞助支持
-
-- 我是一名独立开发者，F-OH和一些开源项目都是我的兴趣投入
-- ~~F-OH的元数据服务器目前是自购自建，配置较低不太稳定~~
-- ~~您的赞助支持将是 F-OH 运作的驱动力！（不限于开发板、服务器等）~~
-- ~~赞助可私信联系或扫描下方二维码（赞助费用请备注“F-OH”或私信告诉我，方便统计到下方赞助列表中）~~
+- The author is an independent developer, F-OH and some open source projects are his hobbies
+- ~~F-OH's metadata server is currently self-purchased and self-built, with low configuration and unstable~~
+- ~~Your sponsorship support will be the driving force of F-OH's operation! (Not limited to development boards, servers, etc.)~~
+- ~~For sponsorship, please contact us privately or scan the QR code below (please note "F-OH" for the sponsorship fee or send me a private message so that it can be counted in the sponsorship list below）~~
 
 <img src="screenshot/wx+zfb.png" height="300px" />
 
-## 赞助列表
+## Sponsorship List
 
-| 序号  | 赞助者                                          | 赞助类型 | 赞助内容              | 赞助时间       |
+| Index  | Sponsors                                          | Sponsorship Type | Sponsored content              | Sponsorship time       |
 |-----|----------------------------------------------|------|-------------------|------------|
-| 1   | A*y                                          | 费用   | ￥6.66             | 2023-06-21 |
-| 2   | A*J                                          | 费用   | ￥10               | 2023-07-07 |
-| 3   | *阳                                           | 费用   | ￥100              | 2023-08-08 |
-| 4   | 原*y                                          | 费用   | ￥23.33            | 2023-08-15 |
-| 5   | [鸿蒙坚果派](https://space.bilibili.com/480883651) | 设备   | 开发板 WuyiFH SEEK100 | 2023-08-19 |
-| 6   | [深圳晶凌达](http://szjld.net)                    | 设备   | 开发板 JLD-A08       | 2023-08-25 |
-| 7   | l*n                                          | 费用   | ￥8.88             | 2023-08-27 |
-| 8   | *凯                                        | 费用   | ￥6.66             | 2023-09-01 |
-| 9   | 乌拉大喵喵                                        | 费用   | ￥50                | 2023-09-04 |
-| 10  | *具                                           | 费用   | ￥10                | 2023-09-16 |
-| 11  | *拉                                           | 费用   | ￥10                | 2023-10-24 |
-| 12  | *鸣                                           | 费用   | ￥6.66              | 2023-11-18 |
-| 13  | *G                                           | 费用   | ￥9.99              | 2023-11-28 |
-| 14  | k*m                                           | 费用   | ￥10              | 2023-12-17 |
+| 1   | A*y                                          | cost   | ￥6.66             | 2023-06-21 |
+| 2   | A*J                                          | cost   | ￥10               | 2023-07-07 |
+| 3   | *阳                                           | cost   | ￥100              | 2023-08-08 |
+| 4   | 原*y                                          | cost   | ￥23.33            | 2023-08-15 |
+| 5   | [鸿蒙坚果派](https://space.bilibili.com/480883651) | device   | Development board WuyiFH SEEK100 | 2023-08-19 |
+| 6   | [深圳晶凌达](http://szjld.net)                    | device   | Development board JLD-A08       | 2023-08-25 |
+| 7   | l*n                                          | cost   | ￥8.88             | 2023-08-27 |
+| 8   | *凯                                        | cost   | ￥6.66             | 2023-09-01 |
+| 9   | 乌拉大喵喵                                        | cost   | ￥50                | 2023-09-04 |
+| 10  | *具                                           | cost   | ￥10                | 2023-09-16 |
+| 11  | *拉                                           | cost   | ￥10                | 2023-10-24 |
+| 12  | *鸣                                           | cost   | ￥6.66              | 2023-11-18 |
+| 13  | *G                                           | cost   | ￥9.99              | 2023-11-28 |
+| 14  | k*m                                           | cost   | ￥10              | 2023-12-17 |
