@@ -1,9 +1,8 @@
 # F-OH Website
 
-## 介绍
+## Project Introduction
 
-F-OH 网站，包含文档、博客、精选应用等（待开发）
+F-OH website, including documents, blogs, featured applications, etc. (to be developed)
+## Initial concept
 
-## 初步构想
-
-使用 Docusaurus 或者 VuePress 构建一个 F-OH 的静态网站
+Build a F-OH static website using Docusaurus or VuePress
