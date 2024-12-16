@@ -6,7 +6,7 @@
 
 > For technical consultation, please go here：[About Author](https://kaihongpai.feishu.cn/wiki/CqWLwJRadibxztkrIWZcogWxnXd)
 
-Oniro is an application center on the OpenHarmony platform, and provides download and installation support
+F-OH is an application center for the Oniro and OpenHarmony platform, and provides download and installation support
 
 The original intention of creating F-OH, both in terms of name and vision, was inspired by [F-Droid](https://f-droid.org). Perhaps OpenHarmony carries too much of everyone's expectations for domestic operating systems and ecosystems. Let us take practical actions to jointly maintain and drive F-OH through the open source community to fulfill its mission!
 
