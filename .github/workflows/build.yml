@@ -1,0 +1,96 @@
+name: Verify Build
+
+on:
+  push:
+    branches:
+      - oniro
+  pull_request:
+    branches:
+      - oniro
+
+jobs:
+  build:
+    name: Build and Verify Application
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Install tree command
+        run: brew install tree
+
+      - name: Setup signing certificates and keystore
+        # This step extracts the required signing materials from a base64 encoded zip stored in GitHub Secrets
+        # The zip contains:
+        # - .cer file: Developer certificate for signing
+        # - .p7b file: Profile for app provisioning
+        # - .p12 file: Keystore containing private key
+        run: |
+          # Decode base64 secret to zip file
+          echo "${{ secrets.ONIRO_APP_SIGNATURE_ZIP }}" | base64 -d > secrets.zip
+          
+          # Extract files while preserving directory structure
+          unzip -o secrets.zip
+          
+          # Cleanup temporary zip file
+          rm secrets.zip
+          
+          # Display extracted files for verification
+          echo "=== Extracted Signing Materials ==="
+          tree .secret -L 4
+
+      - name: Modify bundleName in app.json5
+        run: |
+          echo "Modifying bundleName in app.json5 to match the one in the signature materials"
+          echo "this is a temporary workaround for using the same signature materials stored"
+          echo "in GitHub secrets for multiple apps."
+          echo "See: https://github.com/eclipse-oniro4openharmony/oniro-planning/issues/5#issuecomment-2538648996"
+          sed -i '' 's/"bundleName": "[^"]*"/"bundleName": "com.example.oniromathpunching"/' ./AppScope/app.json5
+
+      - name: Set up tools and dependencies
+        uses: eclipse-oniro4openharmony/oh-app-action@main
+        
+      - name: Verify Installation
+        run: |
+          echo "=== Environment Variables ==="
+          echo "PATH: $PATH"
+          echo "OHOS_BASE_SDK_HOME: $OHOS_BASE_SDK_HOME"
+          echo "CMD_PATH: $CMD_PATH"
+
+          echo "=== OHPM Installation ==="
+          which ohpm
+          ohpm -v
+
+          echo "=== Hvigor Installation ==="
+          which hvigorw
+          hvigorw --version
+
+          echo "=== Installation Directories ==="
+          echo "Command-line Tools:"
+          tree -L 3 $CMD_PATH
+
+          echo "OpenHarmony SDK:"
+          tree -L 3 $OHOS_BASE_SDK_HOME
+
+          echo "=== Node.js Version ==="
+          node --version
+          npm --version
+
+          echo "=== NPM Configuration ==="
+          cat $HOME/.npmrc
+
+      - name: Install OpenHarmony Dependencies
+        run: ohpm install --all
+
+      - name: Initialize and Build
+        run: |
+          hvigorw --version --accept-license
+          hvigorw clean --no-parallel --no-daemon
+          hvigorw assembleHap --mode module -p product=default --stacktrace --no-parallel --no-daemon
+
+      - name: Upload Build Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: HAP packages
+          path: ./entry/build/default/outputs/default
