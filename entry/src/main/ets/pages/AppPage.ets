@@ -17,7 +17,6 @@
 import { AppInfo, AppType } from '../model/AppInfo';
 import AppListItem from '../components/AppListItem';
 import { DataSource } from '../data/DataSource';
-import hilog from '@ohos.hilog';
 import { HttpErrorComponent, LoadComponent } from './Browser';
 
 @Component

@@ -14,14 +14,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import webview from '@ohos.web.webview';
-import hilog from '@ohos.hilog';
-import systemparameter from '@ohos.systemParameterEnhance';
-import router from '@ohos.router'
 import WindowStageUtil from '../utils/WindowStageUtil';
-import window from '@ohos.window';
-import { BusinessError } from '@ohos.base';
 import { RouterParams } from './AppDetail'
+import { webview } from '@kit.ArkWeb';
+import { window } from '@kit.ArkUI';
+import { hilog } from '@kit.PerformanceAnalysisKit';
+import { BusinessError } from '@kit.BasicServicesKit';
+import systemparameter from '@ohos.systemparameter';
 
 interface RouterParameters {
   title: string,
@@ -34,8 +33,10 @@ interface ExtObj {
 }
 
 // 自定义UA
-const PAD_USER_AGENT: string = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTMl, like Gecko) Chrome/99.0.4844.88 Safari/537.36'
-const PHONE_USER_AGENT: string = 'Mozilla/5.0 (Linux; Android 10.0; ohos) AppleWebKit/537.36 (KHTMl, like Gecko) Chrome/99.0.4844.88 HuaweiBrowser/13.0.4.302 Mobile Safari/537.36'
+const PAD_USER_AGENT: string =
+  'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTMl, like Gecko) Chrome/99.0.4844.88 Safari/537.36'
+const PHONE_USER_AGENT: string =
+  'Mozilla/5.0 (Linux; Android 10.0; ohos) AppleWebKit/537.36 (KHTMl, like Gecko) Chrome/99.0.4844.88 HuaweiBrowser/13.0.4.302 Mobile Safari/537.36'
 
 @Entry
 @Component
@@ -57,22 +58,23 @@ struct Browser {
 
   onPageShow() {
     const windowStage = AppStorage.get<window.WindowStage>("windowStage");
-    let params = router.getParams() as RouterParameters
+    let params = this.getUIContext().getRouter().getParams() as RouterParameters
     this.title = params.title
     this.url = params.url
     this.localParams = params.params
     console.info('AboutComponent onPageShow');
-    WindowStageUtil.setLayoutFullScreen(windowStage, WindowStageUtil.COLOR_WHITE, WindowStageUtil.COLOR_BLACK, WindowStageUtil.COLOR_WHITE, WindowStageUtil.COLOR_BLACK);
+    WindowStageUtil.setLayoutFullScreen(windowStage, WindowStageUtil.COLOR_WHITE, WindowStageUtil.COLOR_BLACK,
+      WindowStageUtil.COLOR_WHITE, WindowStageUtil.COLOR_BLACK);
   }
 
   onBackPress(): boolean | void {
-    if(this.localParams){
+    if (this.localParams) {
       //todo: Temporarily make backbtton back to index to avoid crash
-      router.back({
+      this.getUIContext().getRouter().back({
         url: 'pages/Index'
       })
-    }else{
-      router.back()
+    } else {
+      this.getUIContext().getRouter().back()
     }
   }
 
@@ -109,9 +111,9 @@ struct Browser {
             left: 15
           })
           .onClick(() => {
-            router.back({
+            this.getUIContext().getRouter().back({
               url: 'pages/Index'
-            });
+            })
           })
 
           // 页面标题
@@ -145,7 +147,8 @@ struct Browser {
             this.controller.refresh();
             this.controller.loadUrl(this.url)
           } catch (error) {
-            hilog.error(0x0, `ErrorCode: ${(error as BusinessError).code}`, `Message: ${(error as BusinessError).message}`);
+            hilog.error(0x0, `ErrorCode: ${(error as BusinessError).code}`,
+              `Message: ${(error as BusinessError).message}`);
           }
         })
       }

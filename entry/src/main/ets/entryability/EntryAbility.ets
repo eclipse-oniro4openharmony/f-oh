@@ -1,7 +1,7 @@
-import hilog from '@ohos.hilog';
-import UIAbility from '@ohos.app.ability.UIAbility';
-import window from '@ohos.window';
 import WindowStageUtil from '../utils/WindowStageUtil';
+import { UIAbility } from '@kit.AbilityKit';
+import { window } from '@kit.ArkUI';
+import { hilog } from '@kit.PerformanceAnalysisKit';
 
 export default class EntryAbility extends UIAbility {
   onWindowStageCreate(windowStage: window.WindowStage) {

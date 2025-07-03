@@ -15,10 +15,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import router from '@ohos.router'
 import { InfoRow } from '../components/InfoRow';
 import { AppInfo } from '../model/AppInfo';
-import WindowStageUtil from '../utils/WindowStageUtil';
 
 export interface RouterParams {
   appInfo?: AppInfo;
@@ -33,7 +31,7 @@ struct AppDetail {
   @State localParams: RouterParams | null = null;
 
   onPageShow() {
-    const params = router.getParams() as RouterParams
+    const params = this.getUIContext().getRouter().getParams() as RouterParams
     this.localParams = params
     this.appInfo = new AppInfo(params.appInfo)
     this.localVersionName = params.localVersionName as string
@@ -151,11 +149,13 @@ struct AppDetail {
                     title: $r('app.string.repo'),
                     info: this.appInfo.openSourceAddress,
                     clickHandler: () => {
-                      router.pushUrl({ url: 'pages/Browser', params: {
-                        title: this.appInfo.name,
-                        url: this.appInfo.openSourceAddress,
-                        params: this.localParams
-                      } });
+                      this.getUIContext().getRouter().pushUrl({
+                        url: 'pages/Browser', params: {
+                          title: this.appInfo.name,
+                          url: this.appInfo.openSourceAddress,
+                          params: this.localParams
+                        }
+                      })
                     }
                   })
                 }
@@ -168,7 +168,13 @@ struct AppDetail {
                     showRightArrow: false
                   })
                 }
-              }.divider({ strokeWidth: 0.5, color: '#d6d6d6', startMargin: 40, endMargin: 0 })
+              }
+              .divider({
+                strokeWidth: 0.5,
+                color: '#d6d6d6',
+                startMargin: 40,
+                endMargin: 0
+              })
             }.borderRadius(18).backgroundColor('#ffffff')
 
           }.width('100%').padding({ left: 15, right: 15 })

@@ -16,11 +16,8 @@
  */
 import WindowStageUtil from '../utils/WindowStageUtil';
 import { SettingRow } from '../components/Settings';
-import promptAction from '@ohos.promptAction';
-import router from '@ohos.router';
 import { registerAllFonts } from '../font/registerFonts';
-import { fonts } from '../font/fonts'
-import window from '@ohos.window';
+import { window } from '@kit.ArkUI';
 
 const ToastDuration = 1000
 const AUTHOR_NAME = "westinyang"
@@ -29,16 +26,19 @@ const AUTHOR_INFO = $r('app.string.indie_dev');
 @Entry
 @Component
 struct AboutAuthor {
-  aboutToAppear(){
+  aboutToAppear() {
     registerAllFonts();
   }
+
   onPageShow() {
     const windowStage = AppStorage.get<window.WindowStage>("windowStage");
     console.info('About author onPageShow');
-    WindowStageUtil.setLayoutFullScreen(windowStage, '#f3f4f6', WindowStageUtil.COLOR_BLACK, '#f3f4f6', WindowStageUtil.COLOR_BLACK);
+    WindowStageUtil.setLayoutFullScreen(windowStage, '#f3f4f6', WindowStageUtil.COLOR_BLACK, '#f3f4f6',
+      WindowStageUtil.COLOR_BLACK);
   }
 
-  @Builder NavigationTitle() {
+  @Builder
+  NavigationTitle() {
     Column() {
       Text($r('app.string.about_author'))
         .fontColor('#182431')
@@ -67,39 +67,41 @@ struct AboutAuthor {
           Column() {
             this.LogoAndVersionComponent()
             this.AppInfoComponent()
-          }.width('100%').padding({left: 15, right: 15})
+          }.width('100%').padding({ left: 15, right: 15 })
         }
         .edgeEffect(EdgeEffect.None)
         .width('100%')
         .height('auto')
-        .margin({bottom: 56})
+        .margin({ bottom: 56 })
       }
       .width('100%')
       .height('100%')
     }.width('100%').height('100%').backgroundColor('#f3f4f6')
+
     //    .padding({top: WindowStageUtil.STATUS_BAR_HEIGHT})
   }
 
-  @Builder LogoAndVersionComponent() {
+  @Builder
+  LogoAndVersionComponent() {
     Column() {
       Image($r("app.media.author_avatar"))
         .height(72)
         .width(72)
-        .border({width: 0.7, radius: 36, color: '#ebebeb'})
+        .border({ width: 0.7, radius: 36, color: '#ebebeb' })
       Text(AUTHOR_NAME)
         .fontSize(18)
         .fontColor('#182431')
         .fontWeight(500)
         .padding({ top: 8 })
       // todo: 不明白为什么会出现乱码
-        //.fontFamily(fonts.semi_bold.familyName)
+      //.fontFamily(fonts.semi_bold.familyName)
 
       Text(AUTHOR_INFO)
         .fontSize(14)
         .fontColor('#99182431')
-        .margin({top: 4})
+        .margin({ top: 4 })
       // todo: 不明白为什么会出现乱码
-        //.fontFamily(fonts.regular.familyName)
+      //.fontFamily(fonts.regular.familyName)
     }
     .alignItems(HorizontalAlign.Center)
     .align(Alignment.Top)
@@ -109,23 +111,73 @@ struct AboutAuthor {
     })
   }
 
-  @Builder AppInfoComponent() {
+  @Builder
+  AppInfoComponent() {
     // 第一组
     Column() {
       List() {
-        ListItem() { SettingRow({icon: $r('app.media.ic_laptop'), title: 'I\'m westinyang', info: 'https://kaihongpai.feishu.cn/wiki/...', clickHandler: ()=> {
-          router.pushUrl({ url: 'pages/Browser', params: {title: 'I\'m westinyang', url: 'https://kaihongpai.feishu.cn/wiki/CqWLwJRadibxztkrIWZcogWxnXd'} });
-        }}) }
-        ListItem() { SettingRow({icon: $r('app.media.ic_gitee'), title: 'Gitee', info: 'https://gitee.com/westinyang', clickHandler: ()=> {
-          router.pushUrl({ url: 'pages/Browser', params: {title: 'Gitee', url: 'https://gitee.com/westinyang'} });
-        }}) }
-        ListItem() { SettingRow({icon: $r('app.media.ic_github'), title: 'Github', info: 'https://github.com/westinyang', clickHandler: ()=> {
-          router.pushUrl({ url: 'pages/Browser', params: {title: 'Github', url: 'https://github.com/westinyang'} });
-        }}) }
-        ListItem() { SettingRow({icon: $r('app.media.ic_bilibili'), title: 'Bilibili', info: 'https://space.bilibili.com/74433635', clickHandler: ()=> {
-          router.pushUrl({ url: 'pages/Browser', params: {title: 'Bilibili', url: 'https://space.bilibili.com/74433635'} });
-        }}) }
-      }.divider({ strokeWidth: 0.5, color: '#d6d6d6', startMargin: 58, endMargin: 14 })
+        ListItem() {
+          SettingRow({
+            icon: $r('app.media.ic_laptop'),
+            title: 'I\'m westinyang',
+            info: 'https://kaihongpai.feishu.cn/wiki/...',
+            clickHandler: () => {
+              this.getUIContext().getRouter().pushUrl({
+                url: 'pages/Browser',
+                params: {
+                  title: 'I\'m westinyang',
+                  url: 'https://kaihongpai.feishu.cn/wiki/CqWLwJRadibxztkrIWZcogWxnXd'
+                }
+              })
+            }
+          })
+        }
+
+        ListItem() {
+          SettingRow({
+            icon: $r('app.media.ic_gitee'),
+            title: 'Gitee',
+            info: 'https://gitee.com/westinyang',
+            clickHandler: () => {
+              this.getUIContext().getRouter().pushUrl({
+                url: 'pages/Browser', params: { title: 'Gitee', url: 'https://gitee.com/westinyang' }
+              })
+            }
+          })
+        }
+
+        ListItem() {
+          SettingRow({
+            icon: $r('app.media.ic_github'),
+            title: 'Github',
+            info: 'https://github.com/westinyang',
+            clickHandler: () => {
+              this.getUIContext().getRouter().pushUrl({
+                url: 'pages/Browser', params: { title: 'Github', url: 'https://github.com/westinyang' }
+              })
+            }
+          })
+        }
+
+        ListItem() {
+          SettingRow({
+            icon: $r('app.media.ic_bilibili'),
+            title: 'Bilibili',
+            info: 'https://space.bilibili.com/74433635',
+            clickHandler: () => {
+              this.getUIContext().getRouter().pushUrl({
+                url: 'pages/Browser', params: { title: 'Bilibili', url: 'https://space.bilibili.com/74433635' }
+              })
+            }
+          })
+        }
+      }
+      .divider({
+        strokeWidth: 0.5,
+        color: '#d6d6d6',
+        startMargin: 58,
+        endMargin: 14
+      })
     }.borderRadius(18).backgroundColor('#fff')
   }
 }

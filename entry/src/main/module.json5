@@ -30,12 +30,33 @@
       },
       {
         "name": "ohos.permission.READ_MEDIA",
+        "reason": "$string:permission_reason",
+        "usedScene": {
+          "abilities": [
+            "EntryAbility"
+          ],
+          "when": "always"
+        }
       },
       {
         "name": "ohos.permission.WRITE_MEDIA",
+        "reason": "$string:permission_reason",
+        "usedScene": {
+          "abilities": [
+            "EntryAbility"
+          ],
+          "when": "always"
+        }
       },
       {
         "name": "ohos.permission.MEDIA_LOCATION",
+        "reason": "$string:permission_reason",
+        "usedScene": {
+          "abilities": [
+            "EntryAbility"
+          ],
+          "when": "always"
+        }
       }
     ],
     "deliveryWithInstall": true,

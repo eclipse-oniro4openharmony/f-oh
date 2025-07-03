@@ -14,13 +14,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import promptAction from '@ohos.promptAction'
-import constant from '@ohos.bluetooth.constant'
 import { fonts } from '../font/fonts'
 import { AppInfo, AppType } from '../model/AppInfo'
 import { DataSource } from '../data/DataSource'
-import { HomePageData } from '../model/HomePageData'
-import { registerAllFonts } from '../font/registerFonts'
 
 const ToastDuration = 2000
 
@@ -101,7 +97,9 @@ export struct HomePage {
               .placeholderFont({ size: 14, weight: 400 })
               .textFont({ size: 14, weight: 400 })
               .onSubmit((value: string) => {
-                promptAction.showToast({ message: $r('app.string.few_apps_no_search'), duration: ToastDuration });
+                this.getUIContext().getPromptAction().showToast({
+                  message: $r('app.string.few_apps_no_search'), duration: ToastDuration
+                })
               })
               .onChange((value: string) => {
               })

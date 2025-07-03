@@ -1,0 +1,32 @@
+name: Verify Build
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: oniro-runner
+    container:
+      image: francescopham/oniro-builder:5.1.0
+    env:
+      HOME: /root
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Build and sign app
+        run: |
+          cd "$GITHUB_WORKSPACE"
+          onirobuilder sign
+          onirobuilder build
+
+      - name: Upload built HAP packages
+        uses: actions/upload-artifact@v4
+        with:
+          name: HAP packages
+          path: entry/build/default/outputs/default

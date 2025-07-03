@@ -17,8 +17,7 @@
 import WindowStageUtil from '../utils/WindowStageUtil';
 import { SettingRow } from '../components/Settings';
 import promptAction from '@ohos.promptAction';
-import router from '@ohos.router';
-import window from '@ohos.window';
+import { window } from '@kit.ArkUI';
 
 const ToastDuration = 1000
 const APP_VERSION = "1.3.5";
@@ -29,7 +28,8 @@ struct AboutApp {
   onPageShow() {
     const windowStage = AppStorage.get<window.WindowStage>("windowStage");
     console.info('About app onPageShow');
-    WindowStageUtil.setLayoutFullScreen(windowStage, '#f3f4f6', WindowStageUtil.COLOR_BLACK, '#f3f4f6', WindowStageUtil.COLOR_BLACK);
+    WindowStageUtil.setLayoutFullScreen(windowStage, '#f3f4f6', WindowStageUtil.COLOR_BLACK, '#f3f4f6',
+      WindowStageUtil.COLOR_BLACK);
   }
 
   @Builder
@@ -118,10 +118,10 @@ struct AboutApp {
             title: $r('app.string.oniro_platform'),
             info: 'https://oniroproject.org/',
             clickHandler: () => {
-              router.pushUrl({
+              this.getUIContext().getRouter().pushUrl({
                 url: 'pages/Browser',
                 params: { title: $r('app.string.oniro_platform'), url: 'https://oniroproject.org/' }
-              });
+              })
             }
           })
         }
@@ -132,7 +132,9 @@ struct AboutApp {
             title: $r('app.string.app_author'),
             info: 'westinyang',
             clickHandler: () => {
-              router.pushUrl({ url: 'pages/AboutAuthor', params: {} });
+              this.getUIContext().getRouter().pushUrl({
+                url: 'pages/AboutAuthor', params: {}
+              })
             }
           })
         }
@@ -143,10 +145,10 @@ struct AboutApp {
             title: $r('app.string.repo'),
             info: 'https://github.com/eclipse-oniro4openharmony/f-oh',
             clickHandler: () => {
-              router.pushUrl({
+              this.getUIContext().getRouter().pushUrl({
                 url: 'pages/Browser',
                 params: { title: $r('app.string.repo'), url: 'https://github.com/eclipse-oniro4openharmony/f-oh' }
-              });
+              })
             }
           })
         }
@@ -157,17 +159,23 @@ struct AboutApp {
             title: $r('app.string.community'),
             info: 'https://github.com/orgs/eclipse-oniro4openharmony/repositories',
             clickHandler: () => {
-              router.pushUrl({
+              this.getUIContext().getRouter().pushUrl({
                 url: 'pages/Browser',
                 params: {
                   title: $r('app.string.community'),
                   url: 'https://github.com/orgs/eclipse-oniro4openharmony/repositories'
                 }
-              });
+              })
             }
           })
         }
-      }.divider({ strokeWidth: 0.5, color: '#d6d6d6', startMargin: 58, endMargin: 14 })
+      }
+      .divider({
+        strokeWidth: 0.5,
+        color: '#d6d6d6',
+        startMargin: 58,
+        endMargin: 14
+      })
     }.borderRadius(18).backgroundColor('#fff')
   }
 }

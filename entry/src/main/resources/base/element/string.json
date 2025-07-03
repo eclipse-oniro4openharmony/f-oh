@@ -235,8 +235,12 @@
     {
       "name": "top_picks",
       "value": "Top Picks for Your Device"
+    },
+
+
+    {
+      "name": "permission_reason",
+      "value": "reason"
     }
-
-
   ]
 }

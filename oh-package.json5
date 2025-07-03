@@ -1,5 +1,6 @@
 {
-  "name": "appstore_sample",
+  "modelVersion": "5.0.2",
+  "name": "f-oh",
   "version": "1.0.0",
   "description": "Please describe the basic information.",
   "main": "",

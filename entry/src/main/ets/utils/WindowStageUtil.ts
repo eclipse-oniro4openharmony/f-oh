@@ -1,4 +1,4 @@
-import window from '@ohos.window';
+import { window } from "@kit.ArkUI";
 
 /**
  * 应用窗口工具

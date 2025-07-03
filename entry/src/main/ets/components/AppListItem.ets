@@ -15,17 +15,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import { AppInfo, AppActionText, AppStatus } from '../model/AppInfo';
-import request from '@ohos.request';
-import promptAction from '@ohos.promptAction';
-import installer from '@ohos.bundle.installer';
 import fs from '@ohos.file.fs';
-import bundleManager from '@ohos.bundle.bundleManager';
-import hilog from '@ohos.hilog';
-import router from '@ohos.router';
 import { registerAllFonts } from '../font/registerFonts';
-import common from '@ohos.app.ability.common';
-import { BusinessError } from '@ohos.base';
-import UIAbility from '@ohos.app.ability.UIAbility';
+import { common, installer, UIAbility } from '@kit.AbilityKit';
+import { bundleManager } from '@kit.AbilityKit';
+import { hilog } from '@kit.PerformanceAnalysisKit';
+import { BusinessError, request } from '@kit.BasicServicesKit';
 
 const ToastDuration = 1000
 
@@ -47,7 +42,8 @@ export default struct AppListItem {
     if (this.appInfo) { // 先检查 this.appInfo 是否不为 null
       // 检查应用是否已经安装，并获取指定包名应用的启动Ability名
       let bundleName = this.appInfo.packageName;
-      let bundleFlags = bundleManager.BundleFlag.GET_BUNDLE_INFO_WITH_HAP_MODULE | bundleManager.BundleFlag.GET_BUNDLE_INFO_WITH_ABILITY;
+      let bundleFlags = bundleManager.BundleFlag.GET_BUNDLE_INFO_WITH_HAP_MODULE |
+      bundleManager.BundleFlag.GET_BUNDLE_INFO_WITH_ABILITY;
       let userId = 100;
       try {
         bundleManager.getBundleInfo(bundleName, bundleFlags, userId, (err, data) => {
@@ -122,12 +118,14 @@ export default struct AppListItem {
       .height('100%')
       .onClick(() => {
         if (this.appInfo.hapUrl) {
-          router.pushUrl({
+          this.getUIContext().getRouter().pushUrl({
             url: 'pages/AppDetail',
             params: { appInfo: this.appInfo, localVersionName: this.versionCode }
-          });
+          })
         } else {
-          promptAction.showToast({ message: $r('app.string.info_invalid'), duration: ToastDuration });
+          this.getUIContext().getPromptAction().showToast({
+            message: $r('app.string.info_invalid'), duration: ToastDuration
+          })
         }
       })
 
@@ -174,7 +172,9 @@ export default struct AppListItem {
     if (this.appInfo.status == AppStatus.NOT_INSTALLED) {
       // 校验hapUrl
       if (!this.appInfo.getHapUrl()) {
-        promptAction.showToast({ message: $r('app.string.download_link_invalid'), duration: ToastDuration });
+        this.getUIContext().getPromptAction().showToast({
+          message: $r('app.string.download_link_invalid'), duration: ToastDuration
+        })
         return;
       }
       // 未安装（下载或下载并安装）
@@ -221,21 +221,27 @@ export default struct AppListItem {
             downloadTask.on('fail', (err) => {
               console.info('Download task failed. Cause:' + err);
               this.installLoading = false;
-              promptAction.showToast({ message: $r('app.string.download_failed'), duration: ToastDuration });
+              this.getUIContext().getPromptAction().showToast({
+                message: $r('app.string.download_failed'), duration: ToastDuration
+              })
             });
           }).catch((err: BusinessError) => {
             console.error('Failed to request the download. Cause: ' + JSON.stringify(err));
             this.installLoading = false;
-            promptAction.showToast({ message: $r('app.string.download_failed'), duration: ToastDuration });
+            this.getUIContext().getPromptAction().showToast({
+              message: $r('app.string.download_failed'), duration: ToastDuration
+            })
           })
         } catch (err) {
           // err.message: bad file path   Download File already exists
           console.error('err.code : ' + err.code + ', err.message : ' + err.message);
           this.installLoading = false;
-          promptAction.showToast({ message: $r('app.string.download_failed'), duration: ToastDuration });
+          this.getUIContext().getPromptAction().showToast({
+            message: $r('app.string.download_failed'), duration: ToastDuration
+          })
         }
       }
-    }).catch((err:BusinessError) => {
+    }).catch((err: BusinessError) => {
       console.info("access failed with error message: " + err.message + ", error code: " + err.code);
       this.installLoading = false;
     });
@@ -256,20 +262,20 @@ export default struct AppListItem {
           this.installLoading = false;
           if (err) {
             console.error('install failed:' + err.message);
-            promptAction.showToast({
+            this.getUIContext().getPromptAction().showToast({
               message: this.appInfo.actionText + getContext(this)
                 .resourceManager
                 .getStringSync($r('app.string.fails')) + err.message,
               duration: ToastDuration
-            });
+            })
           } else {
             console.info('install successfully.');
-            promptAction.showToast({
+            this.getUIContext().getPromptAction().showToast({
               message: this.appInfo.actionText + getContext(this)
                 .resourceManager
                 .getStringSync($r('app.string.succeeds')),
               duration: ToastDuration
-            });
+            })
             // 更改状态和操作文本
             this.appInfo.status = AppStatus.INSTALLED;
             this.appInfo.actionText = AppActionText.OPEN;
@@ -278,20 +284,20 @@ export default struct AppListItem {
       }).catch((error: Error) => {
         console.error('getBundleInstaller failed. Cause: ' + error.message);
         this.installLoading = false;
-        promptAction.showToast({
+        this.getUIContext().getPromptAction().showToast({
           message: this.appInfo.actionText + getContext(this).resourceManager.getStringSync($r('app.string.fails'))
             + error.message,
           duration: ToastDuration
-        });
+        })
       });
     } catch (error) {
       console.error('getBundleInstaller failed. Cause: ' + error.message);
       this.installLoading = false;
-      promptAction.showToast({
+      this.getUIContext().getPromptAction().showToast({
         message: this.appInfo.actionText + getContext(this).resourceManager.getStringSync($r('app.string.fails'))
           + error.message,
         duration: ToastDuration
-      });
+      })
     }
   }
 
@@ -299,14 +305,17 @@ export default struct AppListItem {
   openApp() {
     // 检查应用是否已经安装，并获取指定包名应用的启动Ability名
     let bundleName = this.appInfo.packageName;
-    let bundleFlags = bundleManager.BundleFlag.GET_BUNDLE_INFO_WITH_HAP_MODULE | bundleManager.BundleFlag.GET_BUNDLE_INFO_WITH_ABILITY;
+    let bundleFlags =
+      bundleManager.BundleFlag.GET_BUNDLE_INFO_WITH_HAP_MODULE | bundleManager.BundleFlag.GET_BUNDLE_INFO_WITH_ABILITY;
     let userId = 100;
     try {
       bundleManager.getBundleInfo(bundleName, bundleFlags, userId, (err, data) => {
         if (err) {
           // 获取失败
           hilog.error(0x0000, 'testTag', 'getBundleInfo failed: %{public}s', err.message);
-          promptAction.showToast({ message: $r('app.string.open_failed_app_not_found'), duration: ToastDuration });
+          this.getUIContext().getPromptAction().showToast({
+            message: $r('app.string.open_failed_app_not_found'), duration: ToastDuration
+          })
           this.appInfo.status = AppStatus.NOT_INSTALLED;
           this.appInfo.actionText = AppActionText.INSTALL;
         } else {
@@ -323,13 +332,17 @@ export default struct AppListItem {
             //            promptAction.showToast({ message: '打开成功', duration: ToastDuration });
           }, (err: BusinessError) => {
             console.error(`startApplication promise error: ${JSON.stringify(err)}`);
-            promptAction.showToast({ message: $r('app.string.open_failed_app_not_found'), duration: ToastDuration });
+            this.getUIContext().getPromptAction().showToast({
+              message: $r('app.string.open_failed_app_not_found'), duration: ToastDuration
+            })
           });
         }
       });
     } catch (err) {
       hilog.error(0x0000, 'testTag', 'getBundleInfo failed: %{public}s', err.message);
-      promptAction.showToast({ message: $r('app.string.open_failed_app_not_found'), duration: ToastDuration });
+      this.getUIContext().getPromptAction().showToast({
+        message: $r('app.string.open_failed_app_not_found'), duration: ToastDuration
+      })
       this.appInfo.status = AppStatus.NOT_INSTALLED;
       this.appInfo.actionText = AppActionText.INSTALL;
     }

@@ -16,7 +16,7 @@
  */
 import { HomePageData } from '../model/HomePageData';
 import {AppInfo, AppType} from '../model/AppInfo';
-import http from '@ohos.net.http';
+import { http } from '@kit.NetworkKit';
 
 // 服务器地址
 // 本地调试请拉取F-OH-Data仓库到本地，并启动一个静态资源服务器，使用本地服务器，尽量避免使用线上服务器地址

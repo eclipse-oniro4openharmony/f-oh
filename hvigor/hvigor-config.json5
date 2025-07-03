@@ -1,7 +1,6 @@
 {
-  "hvigorVersion": "3.2.4",
+  "modelVersion": "5.0.2",
   "dependencies": {
-    "@ohos/hvigor-ohos-plugin": "3.2.4"
   },
   "execution": {
     // "analyze": "default",                    /* Define the build analyze mode. Value: [ "default" | "verbose" | false ]. Default: "default" */
@@ -14,7 +13,8 @@
     // "level": "info"                          /* Define the log level. Value: [ "debug" | "info" | "warn" | "error" ]. Default: "info" */
   },
   "debugging": {
-    // "stacktrace": false                      /* Disable stacktrace compilation. Value: [ true | false ]. Default: false */
+    "stacktrace": true
+    /* Disable stacktrace compilation. Value: [ true | false ]. Default: false */
   },
   "nodeOptions": {
     // "maxOldSpaceSize": 4096                  /* Enable nodeOptions maxOldSpaceSize compilation. Unit M. Used for the daemon process */

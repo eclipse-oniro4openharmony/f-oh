@@ -1,4 +1,5 @@
-import window from '@ohos.window';
+import { window } from "@kit.ArkUI";
+
 // 构造单例对象
 export class GlobalContext {
   private constructor() {}

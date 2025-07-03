@@ -14,8 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import promptAction from '@ohos.promptAction'
-import pasteboard from '@ohos.pasteboard'
+import { pasteboard } from "@kit.BasicServicesKit"
 
 @Preview
 @Component
@@ -61,7 +60,7 @@ export struct InfoRow {
     .width('100%')
     .height(48)
     .onClick(this.clickHandler || ((e) => {
-      let pasteData = pasteboard.createData(pasteboard.MIMETYPE_TEXT_PLAIN,  this.info?.toString() || "")
+      let pasteData = pasteboard.createData(pasteboard.MIMETYPE_TEXT_PLAIN, this.info?.toString() || "")
       pasteboard.getSystemPasteboard()
       let systemPasteboard = pasteboard.getSystemPasteboard();
       systemPasteboard.setData(pasteData, (err, data) => {
@@ -72,10 +71,10 @@ export struct InfoRow {
         console.info('Succeeded in setting PasteData.');
         // 提示
         try {
-          promptAction.showToast({
+          this.getUIContext().getPromptAction().showToast({
             message: getContext(this).resourceManager.getStringSync($r('app.string.Copied')),
             duration: 1000,
-          });
+          })
         } catch (error) {
           console.error(`showToast args error code is ${error.code}, message is ${error.message}`);
         }

@@ -14,7 +14,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import router from '@ohos.router';
 
 @Entry
 @Component
@@ -24,10 +23,10 @@ struct SplashPage {
   onPageShow(): void {
     animateTo({
       duration: 2000,
-      onFinish:()=>{
+      onFinish: () => {
         //when the animation finish go the main page
-        setTimeout(()=>{
-          router.replaceUrl({url: 'pages/Index'})
+        setTimeout(() => {
+          this.getUIContext().getRouter().replaceUrl({ url: 'pages/Index' })
         }, 200)
       }
     }, () => {
@@ -44,9 +43,9 @@ struct SplashPage {
             type: TransitionType.Insert,
             opacity: 0,
             translate: { x: -150 },
-            scale:{
-              x:5,
-              y:5
+            scale: {
+              x: 5,
+              y: 5
             }
           })
         Text($r('app.string.oniro_appStore'))

@@ -17,9 +17,9 @@
 import WindowStageUtil from '../utils/WindowStageUtil'
 import { HomePage } from './HomePage'
 import SettingPage from './SettingPage'
-import window from '@ohos.window'
 import App from './AppPage';
 import { AppType } from '../model/AppInfo'
+import { window } from '@kit.ArkUI';
 
 @Entry
 @Component
