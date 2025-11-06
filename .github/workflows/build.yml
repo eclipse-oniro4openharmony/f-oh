@@ -12,7 +12,7 @@ jobs:
   build:
     runs-on: oniro-runner
     container:
-      image: francescopham/oniro-builder:5.1.0
+      image: francescopham/oniro-builder:6.0
     env:
       HOME: /root
     steps:
