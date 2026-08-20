@@ -15,6 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import { AppInfo, AppType } from '../model/AppInfo';
+import { FORMAT_HAP } from '../utils/AppPackage';
 import { http } from '@kit.NetworkKit';
 
 // Oniro App Store backend (OpenAPI docs: https://fracta.dev/docs)
@@ -32,6 +33,8 @@ interface ApiVersionSummary {
   minApi: number | null;
   targetApi: number | null;
   fileSize: number;
+  // 'hap' 或 'app'，旧版服务端不返回该字段
+  format?: string;
 }
 
 interface ApiAppSummary {
@@ -92,6 +95,7 @@ function toAppInfo(item: ApiAppSummary): AppInfo {
   info.version = item.latestVersion.versionName;
   info.icon = item.iconUrl ?? '';
   info.hapUrl = api_apps + '/' + item.packageName + '/download';
+  info.format = item.latestVersion.format ?? FORMAT_HAP;
   info.tags = item.tags.join(', ');
   return info;
 }

@@ -30,6 +30,8 @@ class AppInfo {
   packageName: string = ''
   version: string = ''
   hapUrl: string = ''
+  // 安装包格式：'hap' 单模块，'app' 模块压缩包
+  format: string = 'hap'
   type: string = ''
   tags: string = ''
   openSourceAddress: string = ''

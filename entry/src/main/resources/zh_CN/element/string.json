@@ -185,6 +185,18 @@
       "value": "下载失败"
     },
     {
+      "name": "install_package_broken",
+      "value": "安装包解压失败"
+    },
+    {
+      "name": "install_no_modules",
+      "value": "安装包中没有可安装的模块"
+    },
+    {
+      "name": "install_device_unsupported",
+      "value": "该应用不支持当前设备"
+    },
+    {
       "name": "open_failed_app_not_found",
       "value": "打开失败：应用不存在"
     },

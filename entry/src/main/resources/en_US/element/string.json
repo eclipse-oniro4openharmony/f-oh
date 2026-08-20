@@ -185,6 +185,18 @@
       "value": "Download failed"
     },
     {
+      "name": "install_package_broken",
+      "value": "Installation package could not be unpacked"
+    },
+    {
+      "name": "install_no_modules",
+      "value": "Installation package contains no installable module"
+    },
+    {
+      "name": "install_device_unsupported",
+      "value": "This app does not support this device"
+    },
+    {
       "name": "open_failed_app_not_found",
       "value": "Opening failed: application does not exist"
     },

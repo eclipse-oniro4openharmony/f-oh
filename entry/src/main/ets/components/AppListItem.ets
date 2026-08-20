@@ -15,6 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import { AppInfo, AppActionText, AppStatus } from '../model/AppInfo';
+import { InstallPlan, packagePath, packageWorkDir, planInstall, PlanStatus, removeDir } from '../utils/AppPackage';
 import fs from '@ohos.file.fs';
 import { registerAllFonts } from '../font/registerFonts';
 import { common, installer, UIAbility } from '@kit.AbilityKit';
@@ -196,10 +197,11 @@ export default struct AppListItem {
     let _this = this;
     let downloadTask: request.DownloadTask
     // 从 AppStorage 获取 filesDir 数据
-    let filesDir = AppStorage.get<string>("filesDir");
+    let filesDir = AppStorage.get<string>("filesDir") ?? '';
     let abilityContext = AppStorage.get<UIAbility>("abilityContext");
     // 下载路径，示例: /data/storage/el2/base/haps/entry/files/org.ohosdev.deviceinfo-v1.0.0.hap
-    let filePath = filesDir + '/' + this.appInfo.packageName + '-' + this.appInfo.version + ".hap";
+    // .app 为多模块压缩包，按服务端返回的格式保存对应后缀
+    let filePath = packagePath(filesDir, this.appInfo.packageName, this.appInfo.version, this.appInfo.format);
 
     // 判断文件是否存在
     fs.access(filePath).then((res) => {
@@ -251,8 +253,54 @@ export default struct AppListItem {
   }
 
   // 安装应用 或 更新应用
-  installApp(hapPath: string) {
-    let hapFilePaths = [hapPath];
+  installApp(pkgPath: string) {
+    let filesDir = AppStorage.get<string>("filesDir") ?? '';
+    let workDir = packageWorkDir(filesDir, this.appInfo.packageName, this.appInfo.version);
+    // .hap 是单个模块，直接安装；.app 先解包，再挑出本机可用的模块一起安装
+    planInstall(pkgPath, this.appInfo.format, workDir).then((plan: InstallPlan) => {
+      if (plan.status != PlanStatus.OK) {
+        if (plan.status == PlanStatus.UNPACK_FAILED) {
+          // 缓存的安装包可能下载不完整，删除后下次点击会重新下载
+          this.discardDownload(pkgPath);
+        }
+        this.installLoading = false;
+        this.getUIContext().getPromptAction().showToast({
+          message: this.planErrorMessage(plan.status), duration: ToastDuration
+        })
+        return;
+      }
+      this.runInstaller(plan);
+    }).catch((error: Error) => {
+      console.error('failed to prepare the package: ' + error.message);
+      this.installLoading = false;
+      this.getUIContext().getPromptAction().showToast({
+        message: $r('app.string.install_package_broken'), duration: ToastDuration
+      })
+    });
+  }
+
+  // 删除缓存的安装包
+  discardDownload(pkgPath: string) {
+    try {
+      fs.unlinkSync(pkgPath);
+    } catch (err) {
+      console.error('failed to discard ' + pkgPath + ': ' + (err as BusinessError).message);
+    }
+  }
+
+  // 解包失败的原因对应的提示文案
+  planErrorMessage(status: PlanStatus): Resource {
+    if (status == PlanStatus.DEVICE_UNSUPPORTED) {
+      return $r('app.string.install_device_unsupported');
+    }
+    if (status == PlanStatus.NO_MODULES) {
+      return $r('app.string.install_no_modules');
+    }
+    return $r('app.string.install_package_broken');
+  }
+
+  // 一次性安装同一个应用的所有模块
+  runInstaller(plan: InstallPlan) {
     let installParam: InstallParams = {
       userId: 100,
       isKeepData: false,
@@ -261,8 +309,10 @@ export default struct AppListItem {
 
     try {
       installer.getBundleInstaller().then(data => {
-        data.install(hapFilePaths, installParam, err => {
+        data.install(plan.modules, installParam, err => {
           this.installLoading = false;
+          // 解包目录只服务于本次安装
+          removeDir(plan.workDir);
           if (err) {
             console.error('install failed:' + err.message);
             this.getUIContext().getPromptAction().showToast({
@@ -287,6 +337,7 @@ export default struct AppListItem {
       }).catch((error: Error) => {
         console.error('getBundleInstaller failed. Cause: ' + error.message);
         this.installLoading = false;
+        removeDir(plan.workDir);
         this.getUIContext().getPromptAction().showToast({
           message: this.appInfo.actionText + getContext(this).resourceManager.getStringSync($r('app.string.fails'))
             + error.message,
@@ -296,6 +347,7 @@ export default struct AppListItem {
     } catch (error) {
       console.error('getBundleInstaller failed. Cause: ' + error.message);
       this.installLoading = false;
+      removeDir(plan.workDir);
       this.getUIContext().getPromptAction().showToast({
         message: this.appInfo.actionText + getContext(this).resourceManager.getStringSync($r('app.string.fails'))
           + error.message,
