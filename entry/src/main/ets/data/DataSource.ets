@@ -18,8 +18,8 @@ import { AppInfo, AppType } from '../model/AppInfo';
 import { FORMAT_HAP } from '../utils/AppPackage';
 import { http } from '@kit.NetworkKit';
 
-// Oniro App Store backend (OpenAPI docs: https://fracta.dev/docs)
-const ds_server: string = 'https://fracta.dev';
+// Oniro App Store backend (OpenAPI docs: https://store.iparo.app/docs)
+const ds_server: string = 'https://store.iparo.app';
 const api_base: string = ds_server + '/api/v1';
 const api_apps: string = api_base + '/apps';
 const api_healthz: string = api_base + '/healthz';
