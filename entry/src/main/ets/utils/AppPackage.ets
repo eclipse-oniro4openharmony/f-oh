@@ -1,6 +1,7 @@
 // 应用安装包处理：.hap 为单个模块，.app 为模块压缩包（bundle）
 import fs from '@ohos.file.fs';
 import { BusinessError, deviceInfo, zlib } from '@kit.BasicServicesKit';
+import { cryptoFramework } from '@kit.CryptoArchitectureKit';
 import { hilog } from '@kit.PerformanceAnalysisKit';
 
 /** Package formats served by the store: a single module, or a bundle of them. */
@@ -40,6 +41,75 @@ interface PackInfo {
 export function packagePath(filesDir: string, packageName: string, version: string, format: string): string {
   const extension: string = format === FORMAT_APP ? FORMAT_APP : FORMAT_HAP;
   return filesDir + '/' + packageName + '-' + version + '.' + extension;
+}
+
+// Packages can be hundreds of MB, so they are hashed a chunk at a time.
+const HASH_CHUNK_BYTES: number = 1024 * 1024;
+
+function toHex(bytes: Uint8Array): string {
+  let hex: string = '';
+  for (let i = 0; i < bytes.length; i++) {
+    hex += (bytes[i] < 16 ? '0' : '') + bytes[i].toString(16);
+  }
+  return hex;
+}
+
+/**
+ * SHA-256 of a file as lowercase hex, read in chunks rather than whole.
+ * Never rejects: a file that cannot be read hashes to ''.
+ */
+export async function sha256OfFile(path: string): Promise<string> {
+  let file: fs.File | null = null;
+  try {
+    const md: cryptoFramework.Md = cryptoFramework.createMd('SHA256');
+    file = await fs.open(path, fs.OpenMode.READ_ONLY);
+    const buffer: ArrayBuffer = new ArrayBuffer(HASH_CHUNK_BYTES);
+    let offset: number = 0;
+    while (true) {
+      const read: number = await fs.read(file.fd, buffer, { offset: offset, length: HASH_CHUNK_BYTES });
+      if (read <= 0) {
+        break;
+      }
+      const chunk: Uint8Array = read === HASH_CHUNK_BYTES ? new Uint8Array(buffer) :
+        new Uint8Array(buffer.slice(0, read));
+      await md.update({ data: chunk });
+      offset += read;
+    }
+    const digest: cryptoFramework.DataBlob = await md.digest();
+    return toHex(digest.data);
+  } catch (err) {
+    hilog.error(0x0000, TAG, 'hashing %{public}s failed: %{public}s', path, (err as BusinessError).message);
+    return '';
+  } finally {
+    if (file !== null) {
+      try {
+        fs.closeSync(file);
+      } catch (err) {
+        hilog.warn(0x0000, TAG, 'close failed: %{public}s', (err as BusinessError).message);
+      }
+    }
+  }
+}
+
+/**
+ * Whether the file at `path` is the package the store published. The store
+ * reports the SHA-256 of the exact bytes it serves, including packages hosted
+ * on GitHub (whose release assets can be replaced after publication), so any
+ * difference means a corrupted, stale or substituted file. An empty
+ * `expected` (an older server that reports no hash) is not checked.
+ * Never rejects: an unreadable file counts as a mismatch.
+ */
+export async function verifyPackage(path: string, expected: string): Promise<boolean> {
+  if (!expected) {
+    return true;
+  }
+  const actual: string = await sha256OfFile(path);
+  if (actual === expected.toLowerCase()) {
+    return true;
+  }
+  hilog.error(0x0000, TAG, 'sha256 mismatch for %{public}s: expected %{public}s, got %{public}s', path, expected,
+    actual || '(unreadable)');
+  return false;
 }
 
 /** Directory an .app bundle is unpacked into before its modules are installed. */

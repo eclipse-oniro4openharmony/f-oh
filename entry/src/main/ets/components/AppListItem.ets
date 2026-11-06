@@ -15,10 +15,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import { AppInfo, AppActionText, AppStatus } from '../model/AppInfo';
-import { InstallPlan, packagePath, packageWorkDir, planInstall, PlanStatus, removeDir } from '../utils/AppPackage';
+import {
+  InstallPlan,
+  packagePath,
+  packageWorkDir,
+  planInstall,
+  PlanStatus,
+  removeDir,
+  verifyPackage
+} from '../utils/AppPackage';
 import fs from '@ohos.file.fs';
 import { registerAllFonts } from '../font/registerFonts';
-import { common, installer, UIAbility } from '@kit.AbilityKit';
+import { common, installer } from '@kit.AbilityKit';
 import { bundleManager } from '@kit.AbilityKit';
 import { hilog } from '@kit.PerformanceAnalysisKit';
 import { BusinessError, request } from '@kit.BasicServicesKit';
@@ -194,11 +202,8 @@ export default struct AppListItem {
 
   downloadApp() {
     this.installLoading = true;
-    let _this = this;
-    let downloadTask: request.DownloadTask
     // 从 AppStorage 获取 filesDir 数据
     let filesDir = AppStorage.get<string>("filesDir") ?? '';
-    let abilityContext = AppStorage.get<UIAbility>("abilityContext");
     // 下载路径，示例: /data/storage/el2/base/haps/entry/files/org.ohosdev.deviceinfo-v1.0.0.hap
     // .app 为多模块压缩包，按服务端返回的格式保存对应后缀
     let filePath = packagePath(filesDir, this.appInfo.packageName, this.appInfo.version, this.appInfo.format);
@@ -206,48 +211,83 @@ export default struct AppListItem {
     // 判断文件是否存在
     fs.access(filePath).then((res) => {
       if (res) {
-        // 存在，直接安装
-        this.installApp(filePath);
+        // 存在，校验后安装
+        this.verifyAndInstall(filePath, true);
       } else {
         // 不存在，下载并安装
-        try {
-          request.downloadFile(this.abilityContext, {
-            url: this.appInfo.getHapUrl(),
-            filePath: filePath
-          }).then((data) => {
-            downloadTask = data;
-            // 监听下载完成
-            downloadTask.on('complete', () => {
-              console.info('Download task completed.');
-              // 安装应用
-              _this.installApp(filePath);
-            });
-            // 监听下载失败
-            downloadTask.on('fail', (err) => {
-              console.info('Download task failed. Cause:' + err);
-              this.installLoading = false;
-              this.getUIContext().getPromptAction().showToast({
-                message: $r('app.string.download_failed'), duration: ToastDuration
-              })
-            });
-          }).catch((err: BusinessError) => {
-            console.error('Failed to request the download. Cause: ' + JSON.stringify(err));
-            this.installLoading = false;
-            this.getUIContext().getPromptAction().showToast({
-              message: $r('app.string.download_failed'), duration: ToastDuration
-            })
-          })
-        } catch (err) {
-          // err.message: bad file path   Download File already exists
-          console.error('err.code : ' + err.code + ', err.message : ' + err.message);
+        this.startDownload(filePath);
+      }
+    }).catch((err: BusinessError) => {
+      console.info("access failed with error message: " + err.message + ", error code: " + err.code);
+      this.installLoading = false;
+    });
+  }
+
+  // 下载安装包，完成后校验并安装
+  startDownload(filePath: string) {
+    let downloadTask: request.DownloadTask
+    try {
+      request.downloadFile(this.abilityContext, {
+        url: this.appInfo.getHapUrl(),
+        filePath: filePath
+      }).then((data) => {
+        downloadTask = data;
+        // 监听下载完成
+        downloadTask.on('complete', () => {
+          console.info('Download task completed.');
+          this.verifyAndInstall(filePath, false);
+        });
+        // 监听下载失败
+        downloadTask.on('fail', (err) => {
+          console.info('Download task failed. Cause:' + err);
+          // 删除不完整的文件，否则下次会从缓存安装它
+          this.discardDownload(filePath);
           this.installLoading = false;
           this.getUIContext().getPromptAction().showToast({
             message: $r('app.string.download_failed'), duration: ToastDuration
           })
-        }
+        });
+      }).catch((err: BusinessError) => {
+        console.error('Failed to request the download. Cause: ' + JSON.stringify(err));
+        this.installLoading = false;
+        this.getUIContext().getPromptAction().showToast({
+          message: $r('app.string.download_failed'), duration: ToastDuration
+        })
+      })
+    } catch (err) {
+      // err.message: bad file path   Download File already exists
+      console.error('err.code : ' + err.code + ', err.message : ' + err.message);
+      this.installLoading = false;
+      this.getUIContext().getPromptAction().showToast({
+        message: $r('app.string.download_failed'), duration: ToastDuration
+      })
+    }
+  }
+
+  /**
+   * Install the package at `filePath` only if its SHA-256 is the one the store
+   * published. A cached copy that fails the check is a stale or partial
+   * download (the cache is keyed by version name, which a republished version
+   * keeps), so it is discarded and downloaded once more; a fresh download that
+   * fails is discarded and reported.
+   */
+  verifyAndInstall(filePath: string, cached: boolean) {
+    verifyPackage(filePath, this.appInfo.sha256).then((ok: boolean) => {
+      if (ok) {
+        this.installApp(filePath);
+        return;
       }
+      this.discardDownload(filePath);
+      if (cached) {
+        this.startDownload(filePath);
+        return;
+      }
+      this.installLoading = false;
+      this.getUIContext().getPromptAction().showToast({
+        message: $r('app.string.install_verify_failed'), duration: ToastDuration
+      })
     }).catch((err: BusinessError) => {
-      console.info("access failed with error message: " + err.message + ", error code: " + err.code);
+      console.error('verify or install failed: ' + err.message);
       this.installLoading = false;
     });
   }

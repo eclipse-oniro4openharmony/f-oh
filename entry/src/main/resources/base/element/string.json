@@ -189,6 +189,10 @@
       "value": "Installation package could not be unpacked"
     },
     {
+      "name": "install_verify_failed",
+      "value": "Package verification failed"
+    },
+    {
       "name": "install_no_modules",
       "value": "Installation package contains no installable module"
     },

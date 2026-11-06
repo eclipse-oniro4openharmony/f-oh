@@ -32,6 +32,9 @@ class AppInfo {
   hapUrl: string = ''
   // 安装包格式：'hap' 单模块，'app' 模块压缩包
   format: string = 'hap'
+  // SHA-256 (lowercase hex) of the package the store serves; '' when the
+  // server does not report one (older backends), in which case it is not checked.
+  sha256: string = ''
   type: string = ''
   tags: string = ''
   openSourceAddress: string = ''

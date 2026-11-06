@@ -189,6 +189,10 @@
       "value": "安装包解压失败"
     },
     {
+      "name": "install_verify_failed",
+      "value": "安装包校验失败"
+    },
+    {
       "name": "install_no_modules",
       "value": "安装包中没有可安装的模块"
     },

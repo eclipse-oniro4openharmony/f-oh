@@ -35,6 +35,15 @@ interface ApiVersionSummary {
   fileSize: number;
   // 'hap' 或 'app'，旧版服务端不返回该字段
   format?: string;
+  // The fields below are absent from older servers.
+  // SHA-256 of the exact bytes served for this version.
+  sha256?: string;
+  // Version-pinned download URL (absolute).
+  downloadUrl?: string;
+  // 'store' or 'github_release'; the latter answers the download with a 302 to GitHub.
+  hosting?: string;
+  // 'uploaded' or 'ci_source' (built from source by the store's CI workflow).
+  buildKind?: string;
 }
 
 interface ApiAppSummary {
@@ -94,8 +103,11 @@ function toAppInfo(item: ApiAppSummary): AppInfo {
   info.type = item.category;
   info.version = item.latestVersion.versionName;
   info.icon = item.iconUrl ?? '';
-  info.hapUrl = api_apps + '/' + item.packageName + '/download';
+  // Prefer the version-pinned URL: '/download' resolves to whatever is latest
+  // when the request arrives, which may no longer match the hash listed here.
+  info.hapUrl = item.latestVersion.downloadUrl ?? (api_apps + '/' + item.packageName + '/download');
   info.format = item.latestVersion.format ?? FORMAT_HAP;
+  info.sha256 = (item.latestVersion.sha256 ?? '').toLowerCase();
   info.tags = item.tags.join(', ');
   return info;
 }
