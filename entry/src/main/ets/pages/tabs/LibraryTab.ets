@@ -25,10 +25,6 @@ import { AppContext } from '../../common/AppContext';
 const GROUP_DOWNLOADING: number = 0;
 const GROUP_INSTALLED: number = 1;
 
-function hasUpdate(app: AppInfo, s: AppState): boolean {
-  return s.installed && s.installedVersionCode < app.latest.versionCode;
-}
-
 /**
  * Store apps on this device: pending updates (with Update all), downloads in
  * progress, and everything installed.
@@ -40,7 +36,7 @@ export struct LibraryTab {
   @Local pulling: boolean = false;
 
   updates(): AppInfo[] {
-    return catalog.apps.filter((a: AppInfo) => hasUpdate(a, installManager.stateOf(a.packageName)));
+    return catalog.apps.filter((a: AppInfo) => installManager.hasUpdate(a));
   }
 
   downloading(): AppInfo[] {
@@ -53,7 +49,7 @@ export struct LibraryTab {
   installed(): AppInfo[] {
     return catalog.apps.filter((a: AppInfo) => {
       const s: AppState = installManager.stateOf(a.packageName);
-      return s.installed && !hasUpdate(a, s);
+      return s.installed && !installManager.hasUpdate(a);
     }).sort((a: AppInfo, b: AppInfo) => a.name.localeCompare(b.name));
   }
 

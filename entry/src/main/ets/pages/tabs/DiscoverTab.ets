@@ -16,7 +16,7 @@
  */
 import { AppInfo } from '../../model/AppInfo';
 import { catalog, LoadState, TagCount } from '../../data/Catalog';
-import { installManager, Phase } from '../../data/InstallManager';
+import { installManager } from '../../data/InstallManager';
 import { AppCard, AppRow } from '../../components/AppRow';
 import { Chip, ErrorView, IconButton, SectionHeader, SkeletonRows } from '../../components/Common';
 import { ListKind, Nav } from '../../common/Nav';
@@ -49,7 +49,7 @@ export struct DiscoverTab {
   @Local pulling: boolean = false;
 
   updateCount(): number {
-    return catalog.apps.filter((a: AppInfo) => installManager.stateOf(a.packageName).phase === Phase.UPDATABLE).length;
+    return installManager.updateCount(catalog.apps);
   }
 
   build() {

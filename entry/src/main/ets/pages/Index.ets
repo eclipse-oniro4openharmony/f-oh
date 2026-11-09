@@ -15,9 +15,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import { AppCategory, AppInfo } from '../model/AppInfo';
+import { AppCategory } from '../model/AppInfo';
 import { catalog, LoadState } from '../data/Catalog';
-import { installManager, Phase } from '../data/InstallManager';
+import { installManager } from '../data/InstallManager';
 import { DetailParams, ListParams, navStack, Routes, WebParams } from '../common/Nav';
 import { FontSize, Size } from '../common/Theme';
 import { DiscoverTab } from './tabs/DiscoverTab';
@@ -52,7 +52,7 @@ struct Index {
   }
 
   updateCount(): number {
-    return catalog.apps.filter((a: AppInfo) => installManager.stateOf(a.packageName).phase === Phase.UPDATABLE).length;
+    return installManager.updateCount(catalog.apps);
   }
 
   @Builder
