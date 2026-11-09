@@ -37,7 +37,7 @@ struct SplashPage {
   build() {
     Column() {
       if (this.flag) {
-        Image($r('app.media.ONIRO'))
+        Image($r('app.media.store_icon'))
           .logoStyle()
           .transition({
             type: TransitionType.Insert,

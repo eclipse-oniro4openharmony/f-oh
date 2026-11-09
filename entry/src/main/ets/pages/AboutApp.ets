@@ -79,10 +79,10 @@ struct AboutApp {
   @Builder
   LogoAndVersionComponent() {
     Column() {
-      Image($r("app.media.ONIRO"))
+      Image($r("app.media.store_icon"))
         .height(100)
         .width(100)
-        .border({ width: 0.7, radius: 16, color: '#ebebeb' })
+        .border({ width: 0.7, radius: 22, color: '#ebebeb' })
       Text($r('app.string.EntryAbility_label'))
         .fontSize(18)
         .fontColor('#182431')

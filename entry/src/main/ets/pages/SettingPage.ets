@@ -137,7 +137,7 @@ export default struct SettingPage {
               List() {
                 ListItem() {
                   SettingRow({
-                    icon: $r('app.media.ONIRO'),
+                    icon: $r('app.media.store_icon'),
                     title: $r('app.string.about_foh'),
                     info: $r('app.string.app_center'),
                     clickHandler: () => {
