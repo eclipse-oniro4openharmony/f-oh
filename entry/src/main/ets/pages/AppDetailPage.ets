@@ -15,6 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+import { MeasureOptions } from '@kit.ArkUI';
 import { pasteboard } from '@kit.BasicServicesKit';
 import { AppInfo, FORMAT_APP, VersionInfo } from '../model/AppInfo';
 import { catalog } from '../data/Catalog';
@@ -29,6 +30,7 @@ import { formatBytes, formatCount, formatDate } from '../common/Format';
 import { AppContext } from '../common/AppContext';
 
 const COLLAPSED_LINES: number = 5;
+const DESCRIPTION_LINE_HEIGHT: number = 22;
 // Descriptions shorter than this fit in the collapsed view.
 const LONG_DESCRIPTION: number = 220;
 const TITLE_AFTER_SCROLL: number = 96;
@@ -72,6 +74,7 @@ export struct AppDetailPage {
   @Local loadingDetail: boolean = true;
   @Local detailFailed: boolean = false;
   @Local expanded: boolean = false;
+  @Local descriptionWidth: number = 0;
   @Local showTitle: boolean = false;
   private scroller: Scroller = new Scroller();
 
@@ -251,12 +254,18 @@ export struct AppDetailPage {
       } else {
         Text(this.app.description || AppContext.str($r('app.string.detail_no_description')))
           .fontSize(FontSize.BODY)
-          .lineHeight(22)
+          .lineHeight(DESCRIPTION_LINE_HEIGHT)
           .fontColor(this.app.description ? $r('app.color.text_primary') : $r('app.color.text_tertiary'))
           .maxLines(this.expanded ? 1000 : COLLAPSED_LINES)
           .textOverflow({ overflow: TextOverflow.Ellipsis })
           .width('100%')
           .copyOption(CopyOptions.LocalDevice)
+          .onAreaChange((oldArea: Area, newArea: Area) => {
+            const width: number = Number(newArea.width);
+            if (width !== this.descriptionWidth) {
+              this.descriptionWidth = width;
+            }
+          })
         if (this.isLongDescription()) {
           Text(this.expanded ? $r('app.string.detail_less') : $r('app.string.detail_more'))
             .fontSize(FontSize.BODY)
@@ -276,9 +285,30 @@ export struct AppDetailPage {
     .padding({ left: Space.GUTTER, right: Space.GUTTER })
   }
 
+  /** Does the description need more than the collapsed lines, at this width and font size? */
   isLongDescription(): boolean {
     const d: string = this.app.description;
-    return d.length > LONG_DESCRIPTION || d.split('\n').length > COLLAPSED_LINES;
+    if (d === '') {
+      return false;
+    }
+    const guess: boolean = d.length > LONG_DESCRIPTION || d.split('\n').length > COLLAPSED_LINES;
+    if (this.descriptionWidth <= 0) {
+      return guess; // not laid out yet
+    }
+    try {
+      const options: MeasureOptions = {
+        textContent: d,
+        constraintWidth: this.descriptionWidth,
+        fontSize: FontSize.BODY,
+        lineHeight: DESCRIPTION_LINE_HEIGHT
+      };
+      const full: SizeOptions = this.getUIContext().getMeasureUtils().measureTextSize(options);
+      options.maxLines = COLLAPSED_LINES;
+      const collapsed: SizeOptions = this.getUIContext().getMeasureUtils().measureTextSize(options);
+      return Number(full.height) > Number(collapsed.height) + 1;
+    } catch (err) {
+      return guess;
+    }
   }
 
   @Builder

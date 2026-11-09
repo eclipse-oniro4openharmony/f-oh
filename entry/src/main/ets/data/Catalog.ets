@@ -84,11 +84,12 @@ export class Catalog {
     }
     try {
       const apps: AppInfo[] = await fetchCatalog();
+      // Install state first (never rejects): shown before it, installed apps would read "Get".
+      await installManager.sync(apps);
       this.details.clear();
       this.apps = apps;
       this.state = LoadState.READY;
       this.refreshing = false;
-      await installManager.sync(apps);
       return true;
     } catch (err) {
       hilog.error(0x0000, TAG, 'catalog load failed: %{public}s', (err as Error).message);

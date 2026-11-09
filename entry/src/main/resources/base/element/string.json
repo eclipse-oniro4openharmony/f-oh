@@ -421,6 +421,10 @@
       "value": "Couldn't clear packages"
     },
     {
+      "name": "clear_cache_busy",
+      "value": "Wait for downloads to finish, then clear"
+    },
+    {
       "name": "about_title",
       "value": "About"
     },

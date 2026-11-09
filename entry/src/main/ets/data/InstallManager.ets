@@ -172,14 +172,51 @@ export class InstallManager {
     return s.installedVersionCode < app.latest.versionCode ? Phase.UPDATABLE : Phase.INSTALLED;
   }
 
+  /** Re-read one app; a busy phase is left alone. */
   private async refresh(app: AppInfo): Promise<void> {
     this.apply(app, await this.bundleInfo(app.packageName));
+  }
+
+  /**
+   * End an install or uninstall: look the app up, then leave the busy phase in
+   * the same step, so a finished install never flashes "Get" while the lookup runs.
+   */
+  private async settle(app: AppInfo): Promise<void> {
+    const b: bundleManager.BundleInfo | undefined = await this.bundleInfo(app.packageName);
+    const s: AppState = this.stateOf(app.packageName);
+    s.phase = Phase.UNKNOWN;
+    s.progress = -1;
+    this.apply(app, b);
+  }
+
+  /** An older version of the app is installed: it is in the Updates list, queued or not. */
+  hasUpdate(app: AppInfo): boolean {
+    const s: AppState = this.stateOf(app.packageName);
+    return s.installed && s.installedVersionCode < app.latest.versionCode;
+  }
+
+  updateCount(apps: AppInfo[]): number {
+    return apps.filter((a: AppInfo) => this.hasUpdate(a)).length;
+  }
+
+  /** Something is downloading, verifying or installing, and so using the package cache. */
+  isWorking(): boolean {
+    return this.running;
   }
 
   /** What tapping the app's main button does in its current phase. */
   primary(app: AppInfo): void {
     const s: AppState = this.stateOf(app.packageName);
-    if (s.isCancellable()) {
+    if (s.phase === Phase.UNKNOWN) {
+      // Not checked against the device yet: an installed app must not be reinstalled.
+      this.refresh(app).then(() => {
+        const phase: Phase = this.stateOf(app.packageName).phase;
+        // Only if still idle: a second tap may have acted on the same lookup.
+        if (phase === Phase.NOT_INSTALLED || phase === Phase.UPDATABLE || phase === Phase.INSTALLED) {
+          this.primary(app);
+        }
+      });
+    } else if (s.isCancellable()) {
       this.cancel(app);
     } else if (s.phase === Phase.INSTALLED) {
       this.open(app);
@@ -191,7 +228,7 @@ export class InstallManager {
   /** Queue an install or update. */
   enqueue(app: AppInfo): void {
     const s: AppState = this.stateOf(app.packageName);
-    if (s.isBusy()) {
+    if (s.isBusy() || s.phase === Phase.UNKNOWN) {
       return;
     }
     if (!app.latest.downloadUrl) {
@@ -242,10 +279,18 @@ export class InstallManager {
     }
     this.running = true;
     while (this.queue.length > 0) {
-      const app: AppInfo = this.queue.shift() as AppInfo;
-      await this.installOne(app);
+      await this.installOne(this.next());
     }
     this.running = false;
+  }
+
+  /**
+   * The next app to install. The store's own update goes last: installing it
+   * replaces the running process, which would drop the rest of the queue.
+   */
+  private next(): AppInfo {
+    const i: number = this.queue.findIndex((a: AppInfo) => !this.isSelf(a.packageName));
+    return this.queue.splice(i >= 0 ? i : 0, 1)[0];
   }
 
   private async installOne(app: AppInfo): Promise<void> {
@@ -257,23 +302,25 @@ export class InstallManager {
     try {
       s.phase = Phase.DOWNLOADING;
       s.progress = -1;
-      // A cached package from an earlier attempt is reused only if it verifies.
+      // A package left by an interrupted attempt is reused only if it verifies.
       const cachedOk: boolean = fs.accessSync(path) && await verifyPackage(path, v.sha256);
       if (!cachedOk) {
         discard(path);
         const completed: boolean = await this.download(app, path, s);
         if (!completed) {
-          discard(path);
           AppContext.toast($r('app.string.toast_download_cancelled'));
           return;
         }
         s.phase = Phase.VERIFYING;
         s.progress = -1;
         if (!await verifyPackage(path, v.sha256)) {
-          discard(path);
           AppContext.toast($r('app.string.install_verify_failed'));
           return;
         }
+      } else if (this.cancelRequested.has(app.packageName)) {
+        // Stop was tapped while the cached package was being checked.
+        AppContext.toast($r('app.string.toast_download_cancelled'));
+        return;
       }
 
       s.phase = Phase.INSTALLING;
@@ -281,17 +328,12 @@ export class InstallManager {
         await planInstall(path, v.format, packageWorkDir(AppContext.filesDir, app.packageName, v.versionName));
       workDir = plan.workDir;
       if (plan.status !== PlanStatus.OK) {
-        if (plan.status === PlanStatus.UNPACK_FAILED) {
-          discard(path);
-        }
         AppContext.toast(planErrorMessage(plan.status));
         return;
       }
       const bundleInstaller: installer.BundleInstaller = await installer.getBundleInstaller();
       const param: installer.InstallParam = { installFlag: REPLACE_EXISTING };
       await bundleInstaller.install(plan.modules, param);
-      // Installed: the package has done its job.
-      discard(path);
       AppContext.toast(AppContext.str(wasInstalled ? $r('app.string.toast_updated') : $r('app.string.toast_installed'),
         app.name));
     } catch (err) {
@@ -300,11 +342,14 @@ export class InstallManager {
         AppContext.toast(AppContext.str($r('app.string.toast_install_failed'), app.name) + ': ' + errorMessage(err));
       }
     } finally {
+      // Installed, cancelled or failed, the package is done with: a partial or
+      // broken file must not be picked up by the next attempt. Only an attempt
+      // cut short by the process dying leaves one behind, and that is verified
+      // before reuse.
+      discard(path);
       removeDir(workDir);
       this.cancelRequested.delete(app.packageName);
-      s.phase = Phase.UNKNOWN; // leave the busy phases so refresh() settles it
-      s.progress = -1;
-      await this.refresh(app);
+      await this.settle(app);
     }
   }
 
@@ -405,8 +450,7 @@ export class InstallManager {
       hilog.error(0x0000, TAG, 'uninstalling %{public}s failed: %{public}s', app.packageName, errorMessage(err));
       AppContext.toast(AppContext.str($r('app.string.toast_uninstall_failed'), app.name));
     } finally {
-      s.phase = Phase.UNKNOWN;
-      await this.refresh(app);
+      await this.settle(app);
     }
   }
 }

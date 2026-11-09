@@ -31,15 +31,17 @@ export function formatBytes(bytes: number): string {
   return value.toFixed(digits) + ' ' + units[unit];
 }
 
-/** 950 -> "950", 1200 -> "1.2K", 3400000 -> "3.4M". */
+/** 950 -> "950", 1200 -> "1.2K", 999960 -> "1M", 3400000 -> "3.4M". */
 export function formatCount(n: number): string {
   if (n < 1000) {
     return n.toString();
   }
-  if (n < 1000000) {
-    return trimZero((n / 1000).toFixed(1)) + 'K';
+  // Round first, then pick the unit: 999960 is "1M", not "1000K".
+  const thousands: number = Math.round(n / 100) / 10;
+  if (thousands < 1000) {
+    return trimZero(thousands.toFixed(1)) + 'K';
   }
-  return trimZero((n / 1000000).toFixed(1)) + 'M';
+  return trimZero((Math.round(n / 100000) / 10).toFixed(1)) + 'M';
 }
 
 function trimZero(s: string): string {
@@ -51,9 +53,13 @@ export function formatDate(iso: string): string {
   return iso ? iso.substring(0, 10) : '';
 }
 
-/** Lower-case and strip accents/punctuation so search matches loosely. */
+/** Lower-case and strip accents and punctuation so search matches loosely: "Café" -> "cafe". */
 export function normalize(s: string): string {
-  return s.toLowerCase().replace(/[\s_\-.:]+/g, ' ').trim();
+  return s.normalize('NFD')
+    .replace(/[̀-ͯ]/g, '')
+    .toLowerCase()
+    .replace(/[\s_\-.:]+/g, ' ')
+    .trim();
 }
 
 /** Two letters for an app without an icon: "Oniro Browser" -> "OB". */

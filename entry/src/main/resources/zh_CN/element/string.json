@@ -421,6 +421,10 @@
       "value": "清除安装包失败"
     },
     {
+      "name": "clear_cache_busy",
+      "value": "请等待下载完成后再清除"
+    },
+    {
       "name": "about_title",
       "value": "关于"
     },

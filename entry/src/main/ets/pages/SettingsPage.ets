@@ -22,6 +22,7 @@ import { Radius, Space, STORE_HOST, STORE_URL } from '../common/Theme';
 import { formatBytes } from '../common/Format';
 import { AppContext } from '../common/AppContext';
 import { cacheSize, clearCache } from '../utils/Cache';
+import { installManager } from '../data/InstallManager';
 
 @Styles
 function card() {
@@ -121,6 +122,11 @@ export struct SettingsPage {
 
   confirmClear(): void {
     if (this.clearing) {
+      return;
+    }
+    // The running download or install reads and writes the cache directory.
+    if (installManager.isWorking()) {
+      AppContext.toast($r('app.string.clear_cache_busy'));
       return;
     }
     this.getUIContext().showAlertDialog({
