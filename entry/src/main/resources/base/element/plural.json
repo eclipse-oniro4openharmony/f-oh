@@ -1,0 +1,69 @@
+{
+  "plural": [
+    {
+      "name": "hero_subtitle",
+      "value": [
+        {
+          "quantity": "one",
+          "value": "%d app or game, ready to install"
+        },
+        {
+          "quantity": "other",
+          "value": "%d apps and games, ready to install"
+        }
+      ]
+    },
+    {
+      "name": "hero_updates",
+      "value": [
+        {
+          "quantity": "one",
+          "value": "%d update available"
+        },
+        {
+          "quantity": "other",
+          "value": "%d updates available"
+        }
+      ]
+    },
+    {
+      "name": "count_apps",
+      "value": [
+        {
+          "quantity": "one",
+          "value": "%d app"
+        },
+        {
+          "quantity": "other",
+          "value": "%d apps"
+        }
+      ]
+    },
+    {
+      "name": "count_games",
+      "value": [
+        {
+          "quantity": "one",
+          "value": "%d game"
+        },
+        {
+          "quantity": "other",
+          "value": "%d games"
+        }
+      ]
+    },
+    {
+      "name": "count_results",
+      "value": [
+        {
+          "quantity": "one",
+          "value": "%d result"
+        },
+        {
+          "quantity": "other",
+          "value": "%d results"
+        }
+      ]
+    }
+  ]
+}

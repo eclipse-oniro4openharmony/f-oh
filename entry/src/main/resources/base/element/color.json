@@ -3,6 +3,110 @@
     {
       "name": "start_window_background",
       "value": "#FFFFFF"
+    },
+    {
+      "name": "brand",
+      "value": "#6024B5"
+    },
+    {
+      "name": "on_brand",
+      "value": "#FFFFFF"
+    },
+    {
+      "name": "brand_soft",
+      "value": "#EFE8FA"
+    },
+    {
+      "name": "on_brand_soft",
+      "value": "#5420A3"
+    },
+    {
+      "name": "magenta",
+      "value": "#E0119B"
+    },
+    {
+      "name": "cyan",
+      "value": "#008FA3"
+    },
+    {
+      "name": "hero_start",
+      "value": "#1A0640"
+    },
+    {
+      "name": "hero_end",
+      "value": "#6024B5"
+    },
+    {
+      "name": "on_hero",
+      "value": "#FFFFFF"
+    },
+    {
+      "name": "on_hero_secondary",
+      "value": "#D9CCF2"
+    },
+    {
+      "name": "bg",
+      "value": "#F6F4FA"
+    },
+    {
+      "name": "surface",
+      "value": "#FFFFFF"
+    },
+    {
+      "name": "surface_variant",
+      "value": "#EDEAF3"
+    },
+    {
+      "name": "skeleton",
+      "value": "#E6E2EE"
+    },
+    {
+      "name": "text_primary",
+      "value": "#1A1523"
+    },
+    {
+      "name": "text_secondary",
+      "value": "#635C70"
+    },
+    {
+      "name": "text_tertiary",
+      "value": "#958EA1"
+    },
+    {
+      "name": "divider",
+      "value": "#E5E1EC"
+    },
+    {
+      "name": "success",
+      "value": "#16834A"
+    },
+    {
+      "name": "success_soft",
+      "value": "#E3F4EA"
+    },
+    {
+      "name": "danger",
+      "value": "#C62E2E"
+    },
+    {
+      "name": "danger_soft",
+      "value": "#FBE7E7"
+    },
+    {
+      "name": "warning",
+      "value": "#A86605"
+    },
+    {
+      "name": "tab_bar",
+      "value": "#F6F4FA"
+    },
+    {
+      "name": "tab_inactive",
+      "value": "#8A8396"
+    },
+    {
+      "name": "scrim",
+      "value": "#14000000"
     }
   ]
 }

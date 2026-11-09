@@ -2,187 +2,171 @@
   "string": [
     {
       "name": "module_desc",
-      "value": "module description"
+      "value": "Oniro 应用商店"
     },
     {
       "name": "EntryAbility_desc",
-      "value": "description"
+      "value": "浏览、安装和更新应用"
     },
     {
       "name": "EntryAbility_label",
       "value": "Oniro App Store"
     },
     {
-      "name": "version",
-      "value": "版本"
+      "name": "permission_reason",
+      "value": "用于保存下载的应用安装包"
     },
     {
-      "name": "app_intro",
-      "value": "应用简介"
+      "name": "tab_discover",
+      "value": "发现"
     },
     {
-      "name": "app_author",
-      "value": "应用作者"
-    },
-    {
-      "name": "repo",
-      "value": "开源仓库"
-    },
-    {
-      "name": "community",
-      "value": "开源社区"
-    },
-    {
-      "name": "app_center",
-      "value": "OpenHarmony自由开源软件的应用中心"
-    },
-    {
-      "name": "indie_dev",
-      "value": "独立开发者 / 开源工作者 / 不忘初心"
-    },
-    {
-      "name": "about_author",
-      "value": "关于作者"
-    },
-    {
-      "name": "app",
+      "name": "tab_apps",
       "value": "应用"
     },
     {
-      "name": "app_version",
-      "value": "版本"
-    },
-    {
-      "name": "oniro_platform",
-      "value": "Oniro平台"
-    },
-    {
-      "name": "game",
+      "name": "tab_games",
       "value": "游戏"
     },
     {
-      "name": "oniro_appStore",
-      "value": "Oniro应用商城"
+      "name": "tab_library",
+      "value": "我的"
     },
     {
-      "name": "app_details",
-      "value": "应用详情"
+      "name": "search_hint",
+      "value": "搜索应用和游戏"
     },
     {
-      "name": "app_tags",
-      "value": "应用标签"
+      "name": "hero_eyebrow",
+      "value": "Oniro 应用商店"
     },
     {
-      "name": "app_pkg_name",
-      "value": "应用包名"
+      "name": "hero_title",
+      "value": "为你的设备打造的开放应用"
     },
     {
-      "name": "current_version",
-      "value": "当前版本"
+      "name": "section_popular",
+      "value": "热门"
     },
     {
-      "name": "developer",
-      "value": "开发者"
+      "name": "section_recent",
+      "value": "最近更新"
     },
     {
-      "name": "release_date",
-      "value": "发行时间"
+      "name": "section_games",
+      "value": "游戏推荐"
     },
     {
-      "name": "app_game_search",
-      "value": "应用、游戏..."
+      "name": "section_source",
+      "value": "从源码构建"
     },
     {
-      "name": "search",
-      "value": "搜索"
+      "name": "section_tags",
+      "value": "按标签浏览"
     },
     {
-      "name": "few_apps_no_search",
-      "value": "应用太少，无需搜索！"
+      "name": "see_all",
+      "value": "查看全部"
     },
     {
-      "name": "inclusion_stats",
-      "value": "收录统计"
+      "name": "sort_popular",
+      "value": "热门"
     },
     {
-      "name": "total",
-      "value": "总计"
+      "name": "sort_recent",
+      "value": "最新"
     },
     {
-      "name": "latest_announcement",
-      "value": "最新公告"
+      "name": "sort_name",
+      "value": "名称"
     },
     {
-      "name": "home",
-      "value": "首页"
+      "name": "filter_all",
+      "value": "全部"
     },
     {
-      "name": "settings",
-      "value": "设置"
+      "name": "action_get",
+      "value": "获取"
     },
     {
-      "name": "download_management",
-      "value": "下载管理"
+      "name": "action_open",
+      "value": "打开"
     },
     {
-      "name": "app_management",
-      "value": "应用管理"
+      "name": "action_update",
+      "value": "更新"
     },
     {
-      "name": "app_metadata_management",
-      "value": "应用元数据源管理"
-    },
-    {
-      "name": "clear_cache",
-      "value": "清空缓存"
-    },
-    {
-      "name": "clear_local_pkgs",
-      "value": "清理全部已下载到本地的应用安装包"
-    },
-    {
-      "name": "about_foh",
-      "value": "关于Oniro"
-    },
-    {
-      "name": "to_be_implemented",
-      "value": "待实现"
-    },
-    {
-      "name": "confirm_clear_cache",
-      "value": "确认要清空缓存吗"
-    },
-    {
-      "name": "clear_cache_warning",
-      "value": "此操作将会清理全部已下载到本地的应用安装包"
-    },
-    {
-      "name": "cancel",
+      "name": "action_cancel",
       "value": "取消"
     },
     {
-      "name": "confirm",
-      "value": "确认"
+      "name": "action_uninstall",
+      "value": "卸载"
     },
     {
-      "name": "clear_cache_failed",
-      "value": "清空缓存失败:"
+      "name": "action_retry",
+      "value": "重试"
     },
     {
-      "name": "clear_cache_done",
-      "value": "清空缓存完毕"
+      "name": "state_downloading",
+      "value": "下载中"
     },
     {
-      "name": "info_invalid",
-      "value": "应用信息无效"
+      "name": "state_waiting",
+      "value": "等待中"
     },
     {
-      "name": "download_link_invalid",
-      "value": "应用下载链接无效"
+      "name": "state_verifying",
+      "value": "校验中"
+    },
+    {
+      "name": "state_installing",
+      "value": "安装中"
+    },
+    {
+      "name": "state_uninstalling",
+      "value": "卸载中"
+    },
+    {
+      "name": "badge_installed",
+      "value": "已安装"
+    },
+    {
+      "name": "badge_update",
+      "value": "可更新"
+    },
+    {
+      "name": "toast_installed",
+      "value": "%s 已安装"
+    },
+    {
+      "name": "toast_updated",
+      "value": "%s 已更新"
+    },
+    {
+      "name": "toast_uninstalled",
+      "value": "%s 已卸载"
+    },
+    {
+      "name": "toast_install_failed",
+      "value": "%s 安装失败"
+    },
+    {
+      "name": "toast_uninstall_failed",
+      "value": "%s 卸载失败"
+    },
+    {
+      "name": "toast_download_cancelled",
+      "value": "已取消下载"
     },
     {
       "name": "download_failed",
       "value": "下载失败"
+    },
+    {
+      "name": "download_link_invalid",
+      "value": "该应用没有下载链接"
     },
     {
       "name": "install_package_broken",
@@ -190,7 +174,7 @@
     },
     {
       "name": "install_verify_failed",
-      "value": "安装包校验失败"
+      "value": "安装包校验失败，已删除"
     },
     {
       "name": "install_no_modules",
@@ -202,57 +186,303 @@
     },
     {
       "name": "open_failed_app_not_found",
-      "value": "打开失败：应用不存在"
-    },
-    {
-      "name": "fails",
-      "value": "失败："
-    },
-    {
-      "name": "succeeds",
-      "value": "成功"
-    },
-    {
-      "name": "Copied",
-      "value": "已复制"
-    },
-    {
-      "name": "open",
-      "value": "打开"
-    },
-    {
-      "name": "install",
-      "value": "安装"
-    },
-    {
-      "name": "update",
-      "value": "更新"
+      "value": "打开失败：应用未安装"
     },
     {
       "name": "network_error",
       "value": "网络异常"
     },
     {
-      "name": "download_management_pending",
-      "value": "待实现，下载管理"
+      "name": "error_title",
+      "value": "无法连接应用商店"
     },
     {
-      "name": "app_management_pending",
-      "value": "待实现，应用管理"
+      "name": "error_body",
+      "value": "请检查网络连接后重试。"
     },
     {
-      "name": "metadata_management_pending",
-      "value": "待实现，应用元数据源管理"
+      "name": "empty_search_title",
+      "value": "没有找到“%s”"
     },
     {
-      "name": "our_fav",
-      "value": "最受喜爱"
+      "name": "empty_search_body",
+      "value": "换个名称、开发者或标签试试。"
     },
     {
-      "name": "top_picks",
-      "value": "为您的设备精选"
+      "name": "empty_list",
+      "value": "这里还没有内容"
+    },
+    {
+      "name": "search_suggested",
+      "value": "推荐"
+    },
+    {
+      "name": "search_recent",
+      "value": "最近搜索"
+    },
+    {
+      "name": "clear",
+      "value": "清除"
+    },
+    {
+      "name": "copied",
+      "value": "已复制"
+    },
+    {
+      "name": "library_updates",
+      "value": "可更新"
+    },
+    {
+      "name": "library_installed",
+      "value": "已安装"
+    },
+    {
+      "name": "library_update_all",
+      "value": "全部更新"
+    },
+    {
+      "name": "library_up_to_date",
+      "value": "所有应用均为最新版本"
+    },
+    {
+      "name": "library_empty_title",
+      "value": "还没有安装应用"
+    },
+    {
+      "name": "library_empty_body",
+      "value": "从商店安装的应用会显示在这里。"
+    },
+    {
+      "name": "library_browse",
+      "value": "浏览应用"
+    },
+    {
+      "name": "library_newer",
+      "value": "已安装的版本较新"
+    },
+    {
+      "name": "version_arrow",
+      "value": "%s → %s"
+    },
+    {
+      "name": "detail_about",
+      "value": "关于此应用"
+    },
+    {
+      "name": "detail_no_description",
+      "value": "开发者尚未添加描述。"
+    },
+    {
+      "name": "detail_more",
+      "value": "展开"
+    },
+    {
+      "name": "detail_less",
+      "value": "收起"
+    },
+    {
+      "name": "detail_info",
+      "value": "信息"
+    },
+    {
+      "name": "detail_downloads",
+      "value": "下载量"
+    },
+    {
+      "name": "detail_size",
+      "value": "大小"
+    },
+    {
+      "name": "detail_version",
+      "value": "版本"
+    },
+    {
+      "name": "detail_api",
+      "value": "API 级别"
+    },
+    {
+      "name": "detail_developer",
+      "value": "开发者"
+    },
+    {
+      "name": "detail_package",
+      "value": "包名"
+    },
+    {
+      "name": "detail_released",
+      "value": "更新日期"
+    },
+    {
+      "name": "detail_format",
+      "value": "安装包格式"
+    },
+    {
+      "name": "detail_installed_version",
+      "value": "已安装版本"
+    },
+    {
+      "name": "detail_source",
+      "value": "源代码"
+    },
+    {
+      "name": "detail_tags",
+      "value": "标签"
+    },
+    {
+      "name": "detail_trust",
+      "value": "安全与可信"
+    },
+    {
+      "name": "trust_verified_dev",
+      "value": "认证开发者"
+    },
+    {
+      "name": "trust_verified_dev_desc",
+      "value": "商店已确认此应用的发布者身份。"
+    },
+    {
+      "name": "trust_built_from_source",
+      "value": "从源码构建"
+    },
+    {
+      "name": "trust_built_from_source_desc",
+      "value": "由 CI 从提交 %s 构建。"
+    },
+    {
+      "name": "trust_checksum",
+      "value": "安装前校验"
+    },
+    {
+      "name": "trust_checksum_desc",
+      "value": "下载的安装包会与商店公布的 SHA-256 核对。"
+    },
+    {
+      "name": "detail_versions",
+      "value": "版本历史"
+    },
+    {
+      "name": "detail_latest",
+      "value": "最新"
+    },
+    {
+      "name": "uninstall_confirm_title",
+      "value": "卸载 %s？"
+    },
+    {
+      "name": "uninstall_confirm_body",
+      "value": "应用及其数据将从此设备中移除。"
+    },
+    {
+      "name": "settings",
+      "value": "设置"
+    },
+    {
+      "name": "settings_storage",
+      "value": "存储"
+    },
+    {
+      "name": "settings_cache",
+      "value": "已下载的安装包"
+    },
+    {
+      "name": "settings_cache_empty",
+      "value": "无已存储的安装包"
+    },
+    {
+      "name": "settings_cache_desc",
+      "value": "安装成功后会自动删除安装包。"
+    },
+    {
+      "name": "settings_store",
+      "value": "商店"
+    },
+    {
+      "name": "settings_server",
+      "value": "商店服务器"
+    },
+    {
+      "name": "settings_website",
+      "value": "商店网站"
+    },
+    {
+      "name": "settings_about",
+      "value": "关于"
+    },
+    {
+      "name": "confirm_clear_cache",
+      "value": "清除已下载的安装包？"
+    },
+    {
+      "name": "clear_cache_warning",
+      "value": "将删除已下载的安装包，已安装的应用不受影响。"
+    },
+    {
+      "name": "clear_cache_done",
+      "value": "已清除下载的安装包"
+    },
+    {
+      "name": "clear_cache_failed",
+      "value": "清除安装包失败"
+    },
+    {
+      "name": "about_title",
+      "value": "关于"
+    },
+    {
+      "name": "about_version",
+      "value": "版本 %s"
+    },
+    {
+      "name": "about_tagline",
+      "value": "在 Oniro 和 OpenHarmony 设备上浏览、安装和更新开放应用。"
+    },
+    {
+      "name": "about_links",
+      "value": "链接"
+    },
+    {
+      "name": "about_source",
+      "value": "源代码"
+    },
+    {
+      "name": "about_oniro",
+      "value": "Oniro 项目"
+    },
+    {
+      "name": "about_community",
+      "value": "GitHub 上的 Oniro"
+    },
+    {
+      "name": "about_credits",
+      "value": "致谢"
+    },
+    {
+      "name": "about_based_on",
+      "value": "基于 westinyang 的 F-OH"
+    },
+    {
+      "name": "about_license",
+      "value": "基于 GPL-3.0 许可证的自由软件"
+    },
+    {
+      "name": "cancel",
+      "value": "取消"
+    },
+    {
+      "name": "confirm",
+      "value": "确认"
+    },
+    {
+      "name": "refresh",
+      "value": "刷新"
+    },
+    {
+      "name": "back",
+      "value": "返回"
+    },
+    {
+      "name": "browser_load_failed",
+      "value": "无法加载此页面"
     }
-
-
   ]
 }

@@ -1,6 +1,6 @@
 # F-OH
 
-<img src="entry/src/main/resources/base/media/ONIRO.png" width="128px" />
+<img src="entry/src/main/resources/base/media/store_icon.png" width="128px" />
 
 ## Project Introduction
 
@@ -51,10 +51,11 @@ Client
 - [x] Clear cache
 - [x] App details (simple implementation, jump to open source repository)
 - [x] App details (complete implementation)
-- [ ] Enrich home page
-- [ ] App search
-- [ ] Download management
-- [ ] App management
+- [x] Enrich home page (popular, recently updated, games, built from source, tags)
+- [x] App search
+- [x] Download management (progress, cancel, install queue, Update all)
+- [x] App management (library of installed apps, uninstall)
+- [x] Dark mode
 - [ ] App metadata source management
 
 Server

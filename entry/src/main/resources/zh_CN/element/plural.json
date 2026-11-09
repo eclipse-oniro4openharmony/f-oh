@@ -1,0 +1,49 @@
+{
+  "plural": [
+    {
+      "name": "hero_subtitle",
+      "value": [
+        {
+          "quantity": "other",
+          "value": "共 %d 款应用和游戏，即点即装"
+        }
+      ]
+    },
+    {
+      "name": "hero_updates",
+      "value": [
+        {
+          "quantity": "other",
+          "value": "%d 个应用可更新"
+        }
+      ]
+    },
+    {
+      "name": "count_apps",
+      "value": [
+        {
+          "quantity": "other",
+          "value": "%d 款应用"
+        }
+      ]
+    },
+    {
+      "name": "count_games",
+      "value": [
+        {
+          "quantity": "other",
+          "value": "%d 款游戏"
+        }
+      ]
+    },
+    {
+      "name": "count_results",
+      "value": [
+        {
+          "quantity": "other",
+          "value": "%d 个结果"
+        }
+      ]
+    }
+  ]
+}

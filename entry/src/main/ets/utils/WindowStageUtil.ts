@@ -1,80 +1,59 @@
-import { window } from "@kit.ArkUI";
+/*
+ * Copyright (C) 2026 Eclipse Oniro for OpenHarmony
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+import { window } from '@kit.ArkUI';
+import { common, ConfigurationConstant } from '@kit.AbilityKit';
+import { hilog } from '@kit.PerformanceAnalysisKit';
+
+const TAG = 'WindowStageUtil';
+
+function colorHex(ctx: common.UIAbilityContext, id: number, fallback: string): string {
+  try {
+    const argb: number = ctx.resourceManager.getColorSync(id);
+    return '#' + (argb >>> 0).toString(16).padStart(8, '0');
+  } catch (err) {
+    return fallback;
+  }
+}
 
 /**
- * 应用窗口工具
+ * Colour the status and navigation bars to match the app's background in the
+ * current light/dark theme. Called at startup and whenever the colour mode
+ * changes.
  */
-export default class WindowStageUtil {
-    static STATUS_BAR_HEIGHT = 36;
-
-    static COLOR_WHITE = '#ffffff';
-    static COLOR_BLACK = '#000000';
-
-    /**
-     * 全屏，不显示导航栏、状态栏
-     * @param windowStage
-     */
-    static setFullScreen(windowStage: window.WindowStage) {
-        // 1.获取应用主窗口
-        let windowClass = null;
-        windowStage.getMainWindow((err, data) => {
-            if (err.code) {
-                console.error('Failed to obtain the main window. Cause: ' + JSON.stringify(err));
-                return;
-            }
-            windowClass = data;
-            console.info('Succeeded in obtaining the main window. Data: ' + JSON.stringify(data));
-
-            // 2.实现沉浸式效果。方式一：设置导航栏、状态栏不显示。
-            let names = [];
-            windowClass.setWindowSystemBarEnable(names, (err) => {
-                if (err.code) {
-                    console.error('Failed to set the system bar to be visible. Cause:' + JSON.stringify(err));
-                    return;
-                }
-                console.info('Succeeded in setting the system bar to be visible.');
-            });
-        })
-    }
-
-    /**
-     * 全屏，更改导航栏、状态栏配色
-     * @param windowStage
-     * @param sBarColor
-     * @param sBarContentColor
-     */
-    static setLayoutFullScreen(windowStage: window.WindowStage, statusBarColor: string, statusBarContentColor: string, navigationBarColor: string, navigationBarContentColor: string) {
-        // 1.获取应用主窗口
-        let windowClass = null;
-        windowStage.getMainWindow((err, data) => {
-            if (err.code) {
-                console.error('Failed to obtain the main window. Cause: ' + JSON.stringify(err));
-                return;
-            }
-            windowClass = data;
-            console.info('Succeeded in obtaining the main window. Data: ' + JSON.stringify(data));
-
-            // 2.实现沉浸式效果。方式二：设置窗口为全屏布局，配合设置导航栏、状态栏的透明度、背景/文字颜色及高亮图标等属性，与主窗口显示保持协调一致。
-            let isLayoutFullScreen = false;
-            windowClass.setWindowLayoutFullScreen(isLayoutFullScreen, (err) => {
-              if (err.code) {
-                console.error('Failed to set the window layout to full-screen mode. Cause:' + JSON.stringify(err));
-                return;
-              }
-              console.info('Succeeded in setting the window layout to full-screen mode.');
-            });
-            let sysBarProps = {
-              statusBarColor: statusBarColor,
-              statusBarContentColor: statusBarContentColor,     // API8+
-              navigationBarColor: navigationBarColor,
-              navigationBarContentColor: navigationBarContentColor  // API8+
-            };
-            windowClass.setWindowSystemBarProperties(sysBarProps, (err) => {
-              if (err.code) {
-                console.error('Failed to set the system bar properties. Cause: ' + JSON.stringify(err));
-                return;
-              }
-              console.info('Succeeded in setting the system bar properties.');
-            });
-        })
-    }
+export function applySystemBars(windowStage: window.WindowStage, ctx: common.UIAbilityContext,
+  colorMode: ConfigurationConstant.ColorMode | undefined, statusBarColorId: number, navigationBarColorId: number): void {
+  const dark: boolean = colorMode === ConfigurationConstant.ColorMode.COLOR_MODE_DARK;
+  const content: string = dark ? '#FFFFFF' : '#000000';
+  windowStage.getMainWindow().then((win: window.Window) => {
+    win.setWindowLayoutFullScreen(false).catch((err: Error) => {
+      hilog.warn(0x0000, TAG, 'layout: %{public}s', err.message);
+    });
+    // Shows below the tab bar where gesture navigation ignores navigationBarColor.
+    win.setWindowBackgroundColor(colorHex(ctx, navigationBarColorId, dark ? '#FF15111D' : '#FFFFFFFF'));
+    const props: window.SystemBarProperties = {
+      statusBarColor: colorHex(ctx, statusBarColorId, dark ? '#FF0E0B16' : '#FFF6F4FA'),
+      statusBarContentColor: content,
+      navigationBarColor: colorHex(ctx, navigationBarColorId, dark ? '#FF15111D' : '#FFFFFFFF'),
+      navigationBarContentColor: content
+    };
+    win.setWindowSystemBarProperties(props).catch((err: Error) => {
+      hilog.warn(0x0000, TAG, 'system bars: %{public}s', err.message);
+    });
+  }).catch((err: Error) => {
+    hilog.error(0x0000, TAG, 'no main window: %{public}s', err.message);
+  });
 }
