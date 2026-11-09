@@ -1,0 +1,15 @@
+# Pushing a version tag (v1.2.3) builds the app from that commit, attaches it
+# to the GitHub release of the tag, and publishes it to the Oniro App Store.
+# Bump versionCode in AppScope/app.json5 before tagging.
+name: Publish to the Oniro App Store
+on:
+  push:
+    tags: ['v*']
+permissions:
+  id-token: write   # proves to the store which repository and commit this is
+  contents: write   # creates the GitHub release that hosts the package
+jobs:
+  publish:
+    uses: eclipse-oniro4openharmony/oniro-app-store-actions/.github/workflows/publish.yml@v1
+    with:
+      app-name: Oniro App Store
