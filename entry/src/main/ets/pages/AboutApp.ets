@@ -20,7 +20,7 @@ import promptAction from '@ohos.promptAction';
 import { window } from '@kit.ArkUI';
 
 const ToastDuration = 1000
-const APP_VERSION = "1.3.5";
+const APP_VERSION = "1.3.6";
 
 @Entry
 @Component
