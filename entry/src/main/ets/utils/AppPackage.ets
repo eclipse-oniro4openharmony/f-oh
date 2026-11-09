@@ -3,10 +3,7 @@ import fs from '@ohos.file.fs';
 import { BusinessError, deviceInfo, zlib } from '@kit.BasicServicesKit';
 import { cryptoFramework } from '@kit.CryptoArchitectureKit';
 import { hilog } from '@kit.PerformanceAnalysisKit';
-
-/** Package formats served by the store: a single module, or a bundle of them. */
-export const FORMAT_HAP: string = 'hap';
-export const FORMAT_APP: string = 'app';
+import { FORMAT_APP, FORMAT_HAP } from '../model/AppInfo';
 
 const TAG: string = 'AppPackage';
 

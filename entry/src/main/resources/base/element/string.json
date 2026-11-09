@@ -2,159 +2,467 @@
   "string": [
     {
       "name": "module_desc",
-      "value": "module description"
+      "value": "Oniro App Store"
     },
     {
       "name": "EntryAbility_desc",
-      "value": "description"
+      "value": "Browse, install and update apps"
     },
     {
       "name": "EntryAbility_label",
       "value": "Oniro App Store"
     },
     {
-      "name": "version",
-      "value": "version"
+      "name": "permission_reason",
+      "value": "Used to store downloaded app packages"
     },
     {
-      "name": "app_intro",
-      "value": "App Introduction"
+      "name": "tab_discover",
+      "value": "Discover"
     },
     {
-      "name": "app_author",
-      "value": "App Author"
+      "name": "tab_apps",
+      "value": "Apps"
     },
     {
-      "name": "repo",
-      "value": "Open Source Repository"
+      "name": "tab_games",
+      "value": "Games"
     },
     {
-      "name": "community",
-      "value": "Open Source Community"
+      "name": "tab_library",
+      "value": "Library"
     },
     {
-      "name": "app_center",
-      "value": "OpenHarmony-Free Open Source  App Center"
+      "name": "search_hint",
+      "value": "Search apps and games"
     },
     {
-      "name": "indie_dev",
-      "value": "Independent Developer / Open Source Contributor / Stay True"
-    },
-    {
-      "name": "about_author",
-      "value": "About the Author"
-    },
-    {
-      "name": "app",
-      "value": "App"
-    },
-    {
-      "name": "app_version",
-      "value": "Version"
-    },
-    {
-      "name": "oniro_platform",
-      "value": "Oniro Platform"
-    },
-    {
-      "name": "oniro_appStore",
+      "name": "hero_eyebrow",
       "value": "Oniro App Store"
     },
     {
-      "name": "game",
-      "value": "Game"
+      "name": "hero_title",
+      "value": "Open apps for your device"
     },
     {
-      "name": "app_details",
-      "value": "App Details"
+      "name": "section_popular",
+      "value": "Popular"
     },
     {
-      "name": "app_tags",
-      "value": "App Tags"
+      "name": "section_recent",
+      "value": "Recently updated"
     },
     {
-      "name": "app_pkg_name",
-      "value": "App Package Name"
+      "name": "section_games",
+      "value": "Games to try"
     },
     {
-      "name": "current_version",
-      "value": "Current Version"
+      "name": "section_source",
+      "value": "Built from source"
     },
     {
-      "name": "developer",
+      "name": "section_tags",
+      "value": "Browse by tag"
+    },
+    {
+      "name": "see_all",
+      "value": "See all"
+    },
+    {
+      "name": "sort_popular",
+      "value": "Popular"
+    },
+    {
+      "name": "sort_recent",
+      "value": "Newest"
+    },
+    {
+      "name": "sort_name",
+      "value": "A–Z"
+    },
+    {
+      "name": "filter_all",
+      "value": "All"
+    },
+    {
+      "name": "action_get",
+      "value": "Get"
+    },
+    {
+      "name": "action_open",
+      "value": "Open"
+    },
+    {
+      "name": "action_update",
+      "value": "Update"
+    },
+    {
+      "name": "action_cancel",
+      "value": "Cancel"
+    },
+    {
+      "name": "action_uninstall",
+      "value": "Uninstall"
+    },
+    {
+      "name": "action_retry",
+      "value": "Try again"
+    },
+    {
+      "name": "state_downloading",
+      "value": "Downloading"
+    },
+    {
+      "name": "state_waiting",
+      "value": "Waiting"
+    },
+    {
+      "name": "state_verifying",
+      "value": "Verifying"
+    },
+    {
+      "name": "state_installing",
+      "value": "Installing"
+    },
+    {
+      "name": "state_uninstalling",
+      "value": "Uninstalling"
+    },
+    {
+      "name": "badge_installed",
+      "value": "Installed"
+    },
+    {
+      "name": "badge_update",
+      "value": "Update"
+    },
+    {
+      "name": "toast_installed",
+      "value": "%s installed"
+    },
+    {
+      "name": "toast_updated",
+      "value": "%s updated"
+    },
+    {
+      "name": "toast_uninstalled",
+      "value": "%s uninstalled"
+    },
+    {
+      "name": "toast_install_failed",
+      "value": "Couldn't install %s"
+    },
+    {
+      "name": "toast_uninstall_failed",
+      "value": "Couldn't uninstall %s"
+    },
+    {
+      "name": "toast_download_cancelled",
+      "value": "Download cancelled"
+    },
+    {
+      "name": "download_failed",
+      "value": "Download failed"
+    },
+    {
+      "name": "download_link_invalid",
+      "value": "This app has no download link"
+    },
+    {
+      "name": "install_package_broken",
+      "value": "The package could not be unpacked"
+    },
+    {
+      "name": "install_verify_failed",
+      "value": "The package failed verification and was discarded"
+    },
+    {
+      "name": "install_no_modules",
+      "value": "The package contains nothing to install"
+    },
+    {
+      "name": "install_device_unsupported",
+      "value": "This app doesn't support this device"
+    },
+    {
+      "name": "open_failed_app_not_found",
+      "value": "Couldn't open the app: it is not installed"
+    },
+    {
+      "name": "network_error",
+      "value": "Network error"
+    },
+    {
+      "name": "error_title",
+      "value": "Can't reach the store"
+    },
+    {
+      "name": "error_body",
+      "value": "Check your connection and try again."
+    },
+    {
+      "name": "empty_search_title",
+      "value": "No results for “%s”"
+    },
+    {
+      "name": "empty_search_body",
+      "value": "Try a different name, developer or tag."
+    },
+    {
+      "name": "empty_list",
+      "value": "Nothing here yet"
+    },
+    {
+      "name": "search_suggested",
+      "value": "Suggested"
+    },
+    {
+      "name": "search_recent",
+      "value": "Recent searches"
+    },
+    {
+      "name": "clear",
+      "value": "Clear"
+    },
+    {
+      "name": "copied",
+      "value": "Copied"
+    },
+    {
+      "name": "library_updates",
+      "value": "Updates available"
+    },
+    {
+      "name": "library_installed",
+      "value": "Installed"
+    },
+    {
+      "name": "library_update_all",
+      "value": "Update all"
+    },
+    {
+      "name": "library_up_to_date",
+      "value": "All your apps are up to date"
+    },
+    {
+      "name": "library_empty_title",
+      "value": "Nothing installed yet"
+    },
+    {
+      "name": "library_empty_body",
+      "value": "Apps you install from the store show up here."
+    },
+    {
+      "name": "library_browse",
+      "value": "Browse apps"
+    },
+    {
+      "name": "library_newer",
+      "value": "Installed version is newer"
+    },
+    {
+      "name": "version_arrow",
+      "value": "%s → %s"
+    },
+    {
+      "name": "detail_about",
+      "value": "About this app"
+    },
+    {
+      "name": "detail_no_description",
+      "value": "The developer hasn't added a description yet."
+    },
+    {
+      "name": "detail_more",
+      "value": "More"
+    },
+    {
+      "name": "detail_less",
+      "value": "Less"
+    },
+    {
+      "name": "detail_info",
+      "value": "Information"
+    },
+    {
+      "name": "detail_downloads",
+      "value": "Downloads"
+    },
+    {
+      "name": "detail_size",
+      "value": "Size"
+    },
+    {
+      "name": "detail_version",
+      "value": "Version"
+    },
+    {
+      "name": "detail_api",
+      "value": "API level"
+    },
+    {
+      "name": "detail_developer",
       "value": "Developer"
     },
     {
-      "name": "release_date",
-      "value": "Release Date"
+      "name": "detail_package",
+      "value": "Package name"
     },
     {
-      "name": "app_game_search",
-      "value": "App and Game..."
+      "name": "detail_released",
+      "value": "Updated on"
     },
     {
-      "name": "search",
-      "value": "Search"
+      "name": "detail_format",
+      "value": "Package format"
     },
     {
-      "name": "few_apps_no_search",
-      "value": "Too Few Apps, No Need to Search!"
+      "name": "detail_installed_version",
+      "value": "Installed version"
     },
     {
-      "name": "inclusion_stats",
-      "value": "Apps Statistics"
+      "name": "detail_source",
+      "value": "Source code"
     },
     {
-      "name": "total",
-      "value": "Total"
+      "name": "detail_tags",
+      "value": "Tags"
     },
     {
-      "name": "latest_announcement",
-      "value": "Latest Announcement"
+      "name": "detail_trust",
+      "value": "Trust & safety"
     },
     {
-      "name": "home",
-      "value": "Home"
+      "name": "trust_verified_dev",
+      "value": "Verified developer"
+    },
+    {
+      "name": "trust_verified_dev_desc",
+      "value": "The store has confirmed who publishes this app."
+    },
+    {
+      "name": "trust_built_from_source",
+      "value": "Built from source"
+    },
+    {
+      "name": "trust_built_from_source_desc",
+      "value": "Built by CI from commit %s."
+    },
+    {
+      "name": "trust_checksum",
+      "value": "Checked before install"
+    },
+    {
+      "name": "trust_checksum_desc",
+      "value": "The download is matched against the SHA-256 the store published."
+    },
+    {
+      "name": "detail_versions",
+      "value": "Version history"
+    },
+    {
+      "name": "detail_latest",
+      "value": "Latest"
+    },
+    {
+      "name": "uninstall_confirm_title",
+      "value": "Uninstall %s?"
+    },
+    {
+      "name": "uninstall_confirm_body",
+      "value": "The app and its data will be removed from this device."
     },
     {
       "name": "settings",
       "value": "Settings"
     },
     {
-      "name": "download_management",
-      "value": "Download Management"
+      "name": "settings_storage",
+      "value": "Storage"
     },
     {
-      "name": "app_management",
-      "value": "App Management"
+      "name": "settings_cache",
+      "value": "Downloaded packages"
     },
     {
-      "name": "app_metadata_management",
-      "value": "App Metadata Management"
+      "name": "settings_cache_empty",
+      "value": "Nothing stored"
     },
     {
-      "name": "clear_cache",
-      "value": "Clear Cache"
+      "name": "settings_cache_desc",
+      "value": "Packages are removed after a successful install."
     },
     {
-      "name": "clear_local_pkgs",
-      "value": "Clear All Locally Downloaded App Installation Packages"
+      "name": "settings_store",
+      "value": "Store"
     },
     {
-      "name": "about_foh",
-      "value": "About F-OH"
+      "name": "settings_server",
+      "value": "Store server"
     },
     {
-      "name": "to_be_implemented",
-      "value": "To Be Implemented"
+      "name": "settings_website",
+      "value": "Store website"
+    },
+    {
+      "name": "settings_about",
+      "value": "About"
     },
     {
       "name": "confirm_clear_cache",
-      "value": "Confirm to Clear Cache"
+      "value": "Clear downloaded packages?"
     },
     {
       "name": "clear_cache_warning",
-      "value": "This Operation Will Clear All Locally Downloaded App Installation Packages"
+      "value": "Downloaded packages will be deleted. Installed apps are not affected."
+    },
+    {
+      "name": "clear_cache_done",
+      "value": "Downloaded packages cleared"
+    },
+    {
+      "name": "clear_cache_failed",
+      "value": "Couldn't clear packages"
+    },
+    {
+      "name": "about_title",
+      "value": "About"
+    },
+    {
+      "name": "about_version",
+      "value": "Version %s"
+    },
+    {
+      "name": "about_tagline",
+      "value": "Browse, install and update open apps on Oniro and OpenHarmony devices."
+    },
+    {
+      "name": "about_links",
+      "value": "Links"
+    },
+    {
+      "name": "about_source",
+      "value": "Source code"
+    },
+    {
+      "name": "about_oniro",
+      "value": "Oniro project"
+    },
+    {
+      "name": "about_community",
+      "value": "Oniro on GitHub"
+    },
+    {
+      "name": "about_credits",
+      "value": "Credits"
+    },
+    {
+      "name": "about_based_on",
+      "value": "Based on F-OH by westinyang"
+    },
+    {
+      "name": "about_license",
+      "value": "Free software under the GPL-3.0 license"
     },
     {
       "name": "cancel",
@@ -165,98 +473,16 @@
       "value": "Confirm"
     },
     {
-      "name": "clear_cache_failed",
-      "value": "Failed to Clear Cache:"
+      "name": "refresh",
+      "value": "Refresh"
     },
     {
-      "name": "clear_cache_done",
-      "value": "Cache Cleared"
+      "name": "back",
+      "value": "Back"
     },
     {
-      "name": "info_invalid",
-      "value": "Application information is invalid"
-    },
-    {
-      "name": "download_link_invalid",
-      "value": "Application download link is invalid"
-    },
-    {
-      "name": "download_failed",
-      "value": "Download failed"
-    },
-    {
-      "name": "install_package_broken",
-      "value": "Installation package could not be unpacked"
-    },
-    {
-      "name": "install_verify_failed",
-      "value": "Package verification failed"
-    },
-    {
-      "name": "install_no_modules",
-      "value": "Installation package contains no installable module"
-    },
-    {
-      "name": "install_device_unsupported",
-      "value": "This app does not support this device"
-    },
-    {
-      "name": "open_failed_app_not_found",
-      "value": "Opening failed: application does not exist"
-    },
-    {
-      "name": "fails",
-      "value": "fails："
-    },
-    {
-      "name": "succeeds",
-      "value": "succeeds"
-    },
-    {
-      "name": "Copied",
-      "value": "Copied"
-    },
-    {
-      "name": "open",
-      "value": "Open"
-    },
-    {
-      "name": "install",
-      "value": "Install"
-    },
-    {
-      "name": "update",
-      "value": "Update"
-    },
-    {
-      "name": "network_error",
-      "value": "Network Error"
-    },
-    {
-      "name": "download_management_pending",
-      "value": "Download management not yet implemented"
-    },
-    {
-      "name": "app_management_pending",
-      "value": "Application management not yet implemented"
-    },
-    {
-      "name": "metadata_management_pending",
-      "value": "Application metadata source management not yet implemented"
-    },
-    {
-      "name": "our_fav",
-      "value": "Our Favourites"
-    },
-    {
-      "name": "top_picks",
-      "value": "Top Picks for Your Device"
-    },
-
-
-    {
-      "name": "permission_reason",
-      "value": "reason"
+      "name": "browser_load_failed",
+      "value": "Couldn't load this page"
     }
   ]
 }

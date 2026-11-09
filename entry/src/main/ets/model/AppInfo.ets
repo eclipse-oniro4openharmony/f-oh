@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2023 westinyang https://gitee.com/ohos-dev
+ * Copyright (C) 2026 Eclipse Oniro for OpenHarmony
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,100 +15,73 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import { ObjectUtils } from '../utils/ObjectUtils';
 
-class AppInfo {
-  constructor(source?: Partial<AppInfo>) {
-    ObjectUtils.assign(this, source);
-  }
-
-  /* 元数据 */
-  id: number = 0
-  name: string = ''
-  desc: string = ''
-  icon: string = ''
-  vender: string = ''
-  packageName: string = ''
-  version: string = ''
-  hapUrl: string = ''
-  // 安装包格式：'hap' 单模块，'app' 模块压缩包
-  format: string = 'hap'
-  // SHA-256 (lowercase hex) of the package the store serves; '' when the
-  // server does not report one (older backends), in which case it is not checked.
-  sha256: string = ''
-  type: string = ''
-  tags: string = ''
-  openSourceAddress: string = ''
-  releaseTime: string = ''
-  /* 扩展数据 */
-  // 应用状态
-  status: AppStatus = AppStatus.NOT_INSTALLED
-  // 操作按钮文本
-  actionText: AppActionText = AppActionText.INSTALL
-
-  getIcon() {
-    // 服务端返回的是绝对地址
-    return this.icon;
-  }
-
-  getHapUrl() {
-    // 服务端返回的是绝对地址
-    return this.hapUrl;
-  }
-
-  public ResourceToString(resource: Resource): string {
-    return getContext(this).resourceManager.getStringSync(resource)
-  }
-}
-
-enum AppType {
+export enum AppCategory {
   APP = 'app',
   GAME = 'game'
 }
 
-enum AppStatus {
-  NOT_INSTALLED = 0, // 未安装
-  INSTALLED = 1, // 已安装
-  UPDATABLE = 2, // 可更新
+/** Package formats served by the store: a single module, or a bundle of them. */
+export const FORMAT_HAP: string = 'hap';
+export const FORMAT_APP: string = 'app';
+
+/** buildKind of a version the store's CI built from a tagged commit. */
+export const BUILD_FROM_SOURCE: string = 'ci_source';
+
+/** One published version of an app. */
+export class VersionInfo {
+  versionName: string = '';
+  versionCode: number = 0;
+  minApi: number = 0;
+  targetApi: number = 0;
+  fileSize: number = 0;
+  // FORMAT_HAP or FORMAT_APP
+  format: string = FORMAT_HAP;
+  // SHA-256 (lowercase hex) of the exact bytes served; '' when the server
+  // reports none (older backends), in which case it is not checked.
+  sha256: string = '';
+  // Version-pinned download URL (absolute).
+  downloadUrl: string = '';
+  // 'uploaded' or BUILD_FROM_SOURCE.
+  buildKind: string = '';
+  // Detail endpoint only.
+  releaseTime: string = '';
+  downloadCount: number = 0;
+  commitSha: string = '';
+  commitUrl: string = '';
+  repository: string = '';
 }
 
-// todo: to be changed with resource type
-enum AppActionText {
-  OPEN = "Open",
-  INSTALL = "Install",
-  UPDATE = "Update"
+/**
+ * An app as listed by the store. The list endpoint fills the summary; the
+ * detail endpoint adds description, source, versions (hasDetail = true).
+ * Instances are treated as immutable: a refresh replaces them.
+ */
+export class AppInfo {
+  packageName: string = '';
+  name: string = '';
+  vendor: string = '';
+  developerUrl: string = '';
+  verified: boolean = false;
+  category: string = AppCategory.APP;
+  iconUrl: string = '';
+  tags: string[] = [];
+  totalDownloads: number = 0;
+  latest: VersionInfo = new VersionInfo();
+  // Position in the store's "most recently updated first" order.
+  recentRank: number = 0;
+
+  hasDetail: boolean = false;
+  description: string = '';
+  sourceUrl: string = '';
+  releaseTime: string = '';
+  versions: VersionInfo[] = [];
+
+  isGame(): boolean {
+    return this.category === AppCategory.GAME;
+  }
+
+  isBuiltFromSource(): boolean {
+    return this.latest.buildKind === BUILD_FROM_SOURCE;
+  }
 }
-
-// 定义映射接口，将标识符与实际资源字符串对应
-interface AppActionClasses {
-  open: string;
-  install: string;
-  update: string;
-}
-
-// 定义 ActionTextMap 接口，替代对象字面量类型
-interface ActionTextMap {
-  open: AppActionText;
-  install: AppActionText;
-  update: AppActionText;
-}
-
-// 使用 ActionTextMap 接口声明 actionTextMap 对象
-const actionTextMap: ActionTextMap = {
-  open: AppActionText.OPEN,
-  install: AppActionText.INSTALL,
-  update: AppActionText.UPDATE,
-};
-
-// 定义 classes 对象，使用标识符友好的键名
-const classes: AppActionClasses = {
-  open: getContext(this).resourceManager.getStringSync($r('app.string.open')),
-  install: getContext(this).resourceManager.getStringSync($r('app.string.install')),
-  update: getContext(this).resourceManager.getStringSync($r('app.string.update'))
-};
-
-export default function getEnumElement(variant:AppActionText):string {
-  return Object(classes)[variant]
-}
-
-export {AppInfo, AppType, AppStatus, AppActionText, classes}

@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2023 westinyang https://gitee.com/ohos-dev
+ * Copyright (C) 2026 Eclipse Oniro for OpenHarmony
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,98 +15,130 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import WindowStageUtil from '../utils/WindowStageUtil'
-import { HomePage } from './HomePage'
-import SettingPage from './SettingPage'
-import App from './AppPage';
-import { AppType } from '../model/AppInfo'
-import { window } from '@kit.ArkUI';
+import { AppCategory, AppInfo } from '../model/AppInfo';
+import { catalog, LoadState } from '../data/Catalog';
+import { installManager, Phase } from '../data/InstallManager';
+import { DetailParams, ListParams, navStack, Routes, WebParams } from '../common/Nav';
+import { FontSize, Size } from '../common/Theme';
+import { DiscoverTab } from './tabs/DiscoverTab';
+import { CategoryTab } from './tabs/CategoryTab';
+import { LibraryTab } from './tabs/LibraryTab';
+import { AppDetailPage } from './AppDetailPage';
+import { SearchPage } from './SearchPage';
+import { AppListPage } from './AppListPage';
+import { SettingsPage } from './SettingsPage';
+import { AboutPage } from './AboutPage';
+import { WebPage } from './WebPage';
+
+const TAB_DISCOVER: number = 0;
+const TAB_APPS: number = 1;
+const TAB_LIBRARY: number = 3;
 
 @Entry
-@Component
+@ComponentV2
 struct Index {
-  private controller: TabsController = new TabsController()
-  @State currentIndex: number = 0
-  @State selectedFontColor: string = '#007DFF'
-  @State fontColor: string = '#182431'
+  @Local currentTab: number = TAB_DISCOVER;
+  private tabs: TabsController = new TabsController();
 
-  onPageShow() {
-    console.info('IndexComponent onPageShow');
-    this.changeLFS()
+  aboutToAppear(): void {
+    catalog.load(false);
+  }
+
+  onPageShow(): void {
+    // Back from the background: apps may have been installed or removed meanwhile.
+    if (catalog.state === LoadState.READY) {
+      installManager.sync(catalog.apps);
+    }
+  }
+
+  updateCount(): number {
+    return catalog.apps.filter((a: AppInfo) => installManager.stateOf(a.packageName).phase === Phase.UPDATABLE).length;
   }
 
   @Builder
-  TabBarBuilder(index: number, title: string | Resource, icon: Resource, iconSelected: Resource) {
-    Column() {
-      Image(this.currentIndex === index ? iconSelected : icon)
-        .width(24)
-        .height(24)
-        .margin(5)
-        .objectFit(ImageFit.Contain)
-      Text(title)
-        .fontColor(this.currentIndex === index ? this.selectedFontColor : this.fontColor)
-        .fontSize(10)
-        .fontWeight(500)
-        .lineHeight(14)
+  RouteMap(name: string, param: Object) {
+    if (name === Routes.DETAIL) {
+      AppDetailPage({ params: param as DetailParams })
+    } else if (name === Routes.SEARCH) {
+      SearchPage()
+    } else if (name === Routes.LIST) {
+      AppListPage({ params: param as ListParams })
+    } else if (name === Routes.SETTINGS) {
+      SettingsPage()
+    } else if (name === Routes.ABOUT) {
+      AboutPage()
+    } else if (name === Routes.WEB) {
+      WebPage({ params: param as WebParams })
     }
-    .justifyContent(FlexAlign.Center)
-    .height('100%')
+  }
+
+  @Builder
+  TabItem(index: number, title: Resource, symbol: Resource, selectedSymbol: Resource) {
+    Column({ space: 2 }) {
+      Badge({
+        // Read here, not passed in: @Builder arguments are evaluated once.
+        count: index === TAB_LIBRARY ? this.updateCount() : 0,
+        maxCount: 99,
+        position: BadgePosition.RightTop,
+        style: { badgeSize: 16, fontSize: 10, badgeColor: $r('app.color.magenta') }
+      }) {
+        SymbolGlyph(this.currentTab === index ? selectedSymbol : symbol)
+          .fontSize(24)
+          .fontColor([this.currentTab === index ? $r('app.color.brand') : $r('app.color.tab_inactive')])
+          .padding(2)
+      }
+
+      Text(title)
+        .fontSize(FontSize.CAPTION - 1)
+        .fontWeight(this.currentTab === index ? FontWeight.Bold : FontWeight.Medium)
+        .fontColor(this.currentTab === index ? $r('app.color.brand') : $r('app.color.tab_inactive'))
+    }
     .width('100%')
-    .backgroundColor('#f7f7f7')
-    .border({ width: { top: 0.5 }, color: '#f8bbbbbb' })
+    .height('100%')
+    .justifyContent(FlexAlign.Center)
   }
 
   build() {
-    Column() {
-      Tabs({
-        barPosition: BarPosition.End,
-        controller: this.controller,
-        index: this.currentIndex
-      }) {
+    Navigation(navStack) {
+      Tabs({ barPosition: BarPosition.End, controller: this.tabs, index: this.currentTab }) {
         TabContent() {
-          HomePage()
+          DiscoverTab({ onOpenLibrary: () => this.tabs.changeIndex(TAB_LIBRARY) })
         }
-        .tabBar(this.TabBarBuilder(0, $r('app.string.home'), $r('app.media.ic_home_normal'), $r('app.media.ic_home_active')))
+        .tabBar(this.TabItem(TAB_DISCOVER, $r('app.string.tab_discover'), $r('sys.symbol.house'),
+          $r('sys.symbol.house_fill')))
 
         TabContent() {
-          //  Text('App')
-          App({ appType: AppType.APP })
+          CategoryTab({ category: AppCategory.APP })
         }
-        .tabBar(this.TabBarBuilder(1, $r('app.string.app'), $r('app.media.ic_app_normal'), $r('app.media.ic_app_active')))
+        .tabBar(this.TabItem(TAB_APPS, $r('app.string.tab_apps'), $r('sys.symbol.square_grid_2x2'),
+          $r('sys.symbol.square_grid_2x2')))
 
         TabContent() {
-          App({ appType: AppType.GAME })
+          CategoryTab({ category: AppCategory.GAME })
         }
-        .tabBar(this.TabBarBuilder(2, $r('app.string.game'), $r('app.media.ic_game_normal'), $r('app.media.ic_game_active')))
+        .tabBar(this.TabItem(2, $r('app.string.tab_games'), $r('sys.symbol.gamecontroller'),
+          $r('sys.symbol.gamecontroller_fill')))
 
         TabContent() {
-          SettingPage()
+          LibraryTab({ onBrowse: () => this.tabs.changeIndex(TAB_APPS) })
         }
-        .tabBar(this.TabBarBuilder(3, $r('app.string.settings'), $r('app.media.ic_search_normal'), $r('app.media.ic_search_active')))
+        .tabBar(this.TabItem(TAB_LIBRARY, $r('app.string.tab_library'), $r('sys.symbol.archivebox'),
+          $r('sys.symbol.archivebox_fill')))
       }
-      .vertical(false)
+      .barHeight(Size.TAB_BAR)
       .barMode(BarMode.Fixed)
-      .barWidth('100%')
-      .barHeight(66)
+      .barBackgroundColor($r('app.color.tab_bar'))
+      .divider({ strokeWidth: 0.5, color: $r('app.color.divider') })
+      .scrollable(false)
+      .animationDuration(0)
       .onChange((index: number) => {
-        this.currentIndex = index
+        this.currentTab = index;
       })
     }
-  }
-
-  changeLFS() {
-    // 从 AppStorage 获取 windowStage 实例
-    const windowStage = AppStorage.get<window.WindowStage>("windowStage");
-
-    if (!windowStage) {
-      console.error("windowStage is not available in AppStorage.");
-      return;
-    }
-
-    if (this.currentIndex == 3) {
-      WindowStageUtil.setLayoutFullScreen(windowStage, '#f3f4f6', WindowStageUtil.COLOR_BLACK, '#f7f7f7', WindowStageUtil.COLOR_BLACK);
-    } else {
-      WindowStageUtil.setLayoutFullScreen(windowStage, WindowStageUtil.COLOR_WHITE, WindowStageUtil.COLOR_BLACK, '#f7f7f7', WindowStageUtil.COLOR_BLACK);
-    }
+    .mode(NavigationMode.Stack)
+    .hideTitleBar(true)
+    .hideToolBar(true)
+    .navDestination(this.RouteMap)
+    .backgroundColor($r('app.color.bg'))
   }
 }
