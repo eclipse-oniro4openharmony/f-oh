@@ -13,10 +13,6 @@
       "value": "Oniro App Store"
     },
     {
-      "name": "permission_reason",
-      "value": "用于保存下载的应用安装包"
-    },
-    {
       "name": "tab_discover",
       "value": "发现"
     },
