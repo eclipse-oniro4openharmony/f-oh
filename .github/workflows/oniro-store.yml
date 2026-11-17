@@ -1,0 +1,24 @@
+# Pushing a version tag (v1.2.3) builds the app from that commit, attaches it
+# to the GitHub release of the tag, and publishes it to the Oniro App Store.
+# Bump versionCode in AppScope/app.json5 before tagging.
+#
+# The store client installs other apps, so it compiles against the full SDK
+# (system APIs: @ohos.bundle.installer, @ohos.systemparameter) and is signed
+# at system_core for INSTALL_BUNDLE and friends. The store holds a version
+# signed that way for an admin's approval.
+name: Publish to the Oniro App Store
+on:
+  push:
+    tags: ['v*']
+permissions:
+  id-token: write   # proves to the store which repository and commit this is
+  contents: write   # creates the GitHub release that hosts the package
+jobs:
+  publish:
+    uses: eclipse-oniro4openharmony/oniro-app-store-actions/.github/workflows/publish.yml@v1
+    with:
+      app-name: Oniro App Store
+      # OpenHarmony 6.1 full SDK, API 23 (compileSdkVersion in build-profile.json5).
+      sdk-archive-url: https://cidownload.openharmony.cn/version/Master_Version/OpenHarmony_6.1.0.47/20261031_010437/version-Master_Version-OpenHarmony_6.1.0.47-20261031_010437-ohos-sdk-full_6.1-LTS.tar.gz
+      sdk-archive-sha256: 31b0d09b487fe32ffc2487df3e9b926cd6172607a4151615025189b065ea2de6
+      apl: system_core
