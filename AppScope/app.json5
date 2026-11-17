@@ -2,8 +2,8 @@
   "app": {
     "bundleName": "org.oniroproject.oniro_appstore",
     "vendor": "oniroproject",
-    "versionCode": 1000015,
-    "versionName": "1.4.1",
+    "versionCode": 1000016,
+    "versionName": "1.4.2",
     "icon": "$media:layered_image",
     "label": "$string:app_name"
   }
